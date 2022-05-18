@@ -59,7 +59,7 @@ LOGGING = {
 SECRET_KEY = 'django-insecure-n@1$7qrta@!=zb!yb!zk*2)9%us3=+)c)k8n&2cw7dr8ydnmw7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['.freelikesandfollowers.com', '143.198.184.59', "*"]
