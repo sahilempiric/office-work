@@ -3471,13 +3471,17 @@ class admin(View):
         else:
             email = request.POST.get('email')
             password = request.POST.get('password')
-            username = User.objects.get(email = email)
+            if User.objects.filter(email = email).exists():
+                username = User.objects.get(email = email)
 
-            user = authenticate(username=username.username, password=password)
+                user = authenticate(username=username.username, password=password)
 
-            if user is not None:
-                request.session['email'] = email
-                return redirect('home')
+                if user is not None:
+                    request.session['email'] = email
+                    return redirect('home')
+                else:
+                    messages.error(request, "Email or password Invalid" )
+                    return redirect('admin')
             else:
                 messages.error(request, "Email or password Invalid" )
                 return redirect('admin')
