@@ -82,7 +82,6 @@ for link_ in links:
 
 
 data_frame = pd.DataFrame(list(zip(leadsources,company_name_li,company_web_li,address_li,contact_li,Phone_number_li)),columns=['Lead Source','Company Name','Comapany Website','Address','Contact','Phone No.'],dtype=str,index=None)
-# print(data_frame) 
 data_frame.to_csv('/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/scrapping/1_/scrapped_data.csv')
 
 input("Enter:")

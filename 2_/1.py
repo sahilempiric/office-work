@@ -49,7 +49,8 @@ while card_count < all_cards_len:
         comapny_name_list = str(comapny_name).split('Stand:')
         comapny_name_ = comapny_name_list[0]
         try:
-            linkdin = driver.find_elements(By.CLASS_NAME,'company-details-row__link')[-1].get_attribute('href')
+            if driver.find_element_by_class_name('fa-linkedin').is_displayed():linkdin = driver.find_elements(By.CLASS_NAME,'company-details-row__link')[-1].get_attribute('href')
+            else:linkdin='-'
         except Exception as e:linkdin='-'
         linkdin_li.append(linkdin)
         from_ = str(comapny_name_list[-1]).strip()
