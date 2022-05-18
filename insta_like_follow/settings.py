@@ -114,28 +114,28 @@ WSGI_APPLICATION = 'insta_like_follow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'instalikedb',
-            'USER': 'postgres',
-            'PASSWORD': '0000',
-            'HOST': 'localhost',    
-            'PORT' : '5432',
-        }
+# if DEBUG:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'instalikedb',
+        'USER': 'postgres',
+        'PASSWORD': '0000',
+        'HOST': 'localhost',    
+        'PORT' : '',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'instalikedb',
-            'USER': 'python',
-            'PASSWORD': '0000',
-            'HOST': 'localhost',    
-            'PORT' : '5432',
-        }
-    }
+}
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': 'instalikedb',
+#             'USER': 'python',
+#             'PASSWORD': '0000',
+#             'HOST': 'localhost',    
+#             'PORT' : '5432',
+#         }
+#     }
 
 
 # Password validation
