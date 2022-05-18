@@ -1,0 +1,169 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InstaLikeFollow | Log in</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/adminlte.min.css' %}">
+  <!-- fav icon -->
+  <link rel="shortcut icon" href="{% static 'img/InstaLikeFollow.png' %}">
+
+</head>
+
+<body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href=""></a><b>Insta</b>LIKEFOLLOW</a>
+    </div>
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg" style="font-size: x-large; font-weight: bold;">Sign In</p>
+        {% for message in messages %}
+        {% if 'success' in message.tags %}
+        <div style="text-align: center; margin-bottom: 5px; margin-top: -20px;">
+          <strong style="color: rgb(0, 129, 0);">{{message}}</strong>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div style="text-align: center; margin-bottom: 5px; margin-top: -20px;">
+          <strong style="color: red;">{{message}}</strong>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="input-group form-group" style="margin-bottom: 0px;">
+            <input type="email" name="email" class="form-control" placeholder="Email" id="email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope " id="emailbox"></span>
+              </div>
+            </div>
+
+          </div>
+          <span class="error_form" id="email_error_message" style="color:red;"></span>
+          <div class="input-group mt-3">
+            <input type="password" name="password" class="form-control" placeholder="Password" id="password">
+
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock" id="passwordbox"></span>
+              </div>
+            </div>
+          </div>
+          <span class="error_form" id="password_error_message" style="color:red;"></span>
+          <div class="row">
+            <div class="col-8"></div>
+            <div class="col-4">
+              <input type="submit" value="Sign In" id="Login" class="btn btn-primary btn-block mt-3">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- jQuery -->
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'plugins/jquery/js/adminlte.min.js' %}"></script>
+
+  <script type="text/javascript">
+    $(function () {
+      $("#email_error_message").hide();
+      $("#password_error_message").hide();
+
+      var error_email = false;
+      var error_password = false;
+
+      $("#email").focusout(function () {
+        check_email();
+      });
+      $("#password").focusout(function () {
+        check_password();
+      });
+
+      function check_password() {
+        var password_length = $("#password").val().length;
+        var password = $("#password").val();
+
+        if (password !== "") {
+          $("#password_error_message").hide();
+          $("#passwordbox").css("color", "");
+
+        }
+        else {
+          $("#password_error_message").html("Enter password");
+          $("#passwordbox").css("color", "red");
+          $("#password_error_message").show();
+          error_password = true;
+        }
+      }
+
+      function check_email() {
+        var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{1,4})?$/;
+        var email = $("#email").val();
+        if (email !== '') {
+          if (pattern.test(email)) {
+            $("#email_error_message").hide();
+            $("#emailbox").css("color", "");
+          }
+          else {
+            $("#email_error_message").html("Invalid Email");
+            $("#emailbox").css("color", "red");
+            $("#email_error_message").show();
+            error_email = true;
+          }
+        } else {
+          $("#email_error_message").html("Enter Email");
+          $("#emailbox").css("color", "red");
+          $("#email_error_message").show();
+          error_email = true;
+        }
+      }
+
+
+      $("#Login").click(function () {
+
+        error_email = false;
+        error_password = false;
+
+        check_email();
+        check_password();
+
+        if (error_email === false && error_password === false) {
+
+          var email = $('#email').val();
+          var password = $('#password').val();
+          
+        } else {
+          return false;
+        }
+
+      });
+    });
+
+  </script>
+</body>
+
+</html>

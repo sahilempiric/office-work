@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Daily Notification
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- MODEL -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Daily Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="notification_title">Notification Title</label>
+                            <input type="text" name="notification_title" class="form-control" id="notification_title" value="{{app_data_dic.notification_title}}" placeholder="Notification Title" >
+                        </div>
+                        <div class="form-group">
+                            <label for="notification_message">Notification Message</label>
+                            <textarea type="text" name="notification_message" class="form-control" id="notification_message" placeholder="Notification Message" >{{app_data_dic.notification_message}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="notification_show">Notification Show</label>
+                            <select name="notification_show" class="custom-select" required>
+                                <option value="1" 
+                                {% if app_data_dic.notification_show in "1" %}
+                                selected
+                                {% endif %}
+                                >Yes</option>
+                                <option value="0"
+                                {% if app_data_dic.notification_show in "0" %} 
+                                selected
+                                {% endif %}
+                                >No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Daily Notification</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"> Notification </li>
+                                <li class="breadcrumb-item ">Daily Notification</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"> Daily Notification
+                                </h3>
+                            </div>
+                        </div>
+                        <form
+                            style="margin-top: -20px; border: 1px solid grey; border-radius: 0px 0px 5px 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <div class="card-body">
+                                <div class="form-group" style="margin-bottom: 35px;">
+                                    <button type="button" class="btn btn-outline-primary btn-block" style="float: right; width: 80px;" data-toggle="modal" data-target="#exampleModal"> Edit
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notification_title">Notification Title</label>
+                                    <b type="text" class="form-control" id="notification_title"> {{app_data_dic.notification_title}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notification_message">Notification Message</label>
+                                    <textarea readonly type="text" class="form-control" id="notification_message" style="background-color: white;"> {{app_data_dic.notification_message}} </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notification_show">Notification Show</label>
+                                    <b id="notification_show" class="form-control">
+                                        {% if app_data_dic.notification_show == "0" %}
+                                        No
+                                        {% endif %}
+                                        {% if app_data_dic.notification_show == "1" %}
+                                        Yes
+                                        {% endif %}
+                                    </b>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

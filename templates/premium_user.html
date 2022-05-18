@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Premium User List
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Premium User List</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"><a href="{% url 'home' %}"> Home </a></li>
+                                <li class="breadcrumb-item ">Premium User List</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <form action="" method="GET">
+                        <div class="row">
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                    <input type="text" name="premium_user_list_startdate" value="{{start_date}}" class="form-control datetimepicker-input" id="start_date"
+                                        data-target="#reservationdate" style="width: 50px;" placeholder="Start Date">
+                                    <div class="input-group-append" data-target="#reservationdate"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                                    <input type="text" name="premium_user_list_enddate" value="{{end_date}}" class="form-control datetimepicker-input" id="end_date"
+                                        data-target="#reservationdate2" style="width: 50px;" placeholder="End Date">
+                                    <div class="input-group-append " data-target="#reservationdate2"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text "><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="submit" class="btn btn-outline-primary btn-block btn-sm" id="submit">Submit</button>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="reset" class="btn btn-outline-primary btn-block btn-sm" id="premium_input_reset">RESET</button>
+                            </div>
+                        </div>
+                    </form>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example" class="table table-bordered table-hover dataTable dtr-inline">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>User ID</th>
+                                            <th>Username</th>
+                                            <th>Date of Registation</th>
+                                            <th>Total Coins</th>
+                                            <th>Refferal Code</th>
+                                            <th>Reffered</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    <tbody class="tbody">
+                                        {% if premium_user %}
+                                        {% for i in premium_user %}
+                                            <tr id="{{i.id}}">
+                                            <td>{{i.user_id}}</td>
+                                            <td>{{i.username}}</td>
+                                            <td>{{i.created_at}}</td>
+                                            <td>{{i.total_coins}}</td>
+                                            <td>{{i.referral_code}}</td>
+                                            <td>
+                                                {% if i.is_referred == '0' %}
+                                                    <span class="badge bg-danger">Not Reffered</span>
+                                                    {% endif %}
+                                                    {% if i.is_referred == '1' %}
+                                                    <span class="badge bg-success">Reffered</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if i.status == '0' %}
+                                                    <span class="badge bg-danger">Deactive</span>
+                                                    {% endif %}
+                                                    {% if i.status == '1' %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <td colspan="13" style="text-align:center;"><h2> No Record Found </h2></td>
+                                        {% endif %}
+                                    </tbody>
+                                    </thead>
+                                </table>
+                                {% if premium_user.paginator.num_pages > 1 %}
+                                <div class="text-center">
+                                    <ul class="pagination">
+                                    
+                                    {% if premium_user.has_previous %}
+                                    <li class="page-item "><a href="?page={{ premium_user.previous_page_number|add:'-4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">«</a></li>
+                                    {% endif %}
+                                    
+                                    {% if premium_user.number|add:'-4' > 1 %}
+                                    <li class="page-item "><a href="?page= 1 " class="page-link">…</a></li>
+                                    {% endif %}
+                                    
+                                    {% for i in premium_user.paginator.page_range %}
+                                    {% if premium_user.number == i %}
+                                    <li class="active page-item"><a  class="page-link">{{ i }}</a></li>
+                                    {% elif i > premium_user.number|add:'-5' and i < premium_user.number|add:'10' %}
+                                    <li class="page-item "><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if premium_user.paginator.num_pages > premium_user.number|add:'0' %}
+                                    <li class="page-item "><a href="?page={{ premium_user.paginator.num_pages }}" class="page-link">…</a></li>
+                                    {% endif %}
+    
+                                    {% if premium_user.has_next %}
+                                    <li class="page-item "><a href="?page={{ premium_user.next_page_number|add:'4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">»</a></li>
+                                    
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %} 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/premium_user_list.js' %}"></script>
+{% endblock %}

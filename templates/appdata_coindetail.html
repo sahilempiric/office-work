@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+AppData-Coin Details
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<!-- Model -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit App Data Coin Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="EarnLikeCoin">Earn Like Coin</label>
+                            <input type="text" class="form-control" id="EarnLikeCoin1" name="EarnLikeCoin" placeholder="Earn Like Coin" value="{{earn_like}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="spendLikeCoin">Spend Like Coin</label>
+                            <input type="text" class="form-control" id="spendLikeCoin1" name="spendLikeCoin" placeholder="Spend Like Coin" value="{{spend_like}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="EarnFollowCoin">Earn Follow Coin</label>
+                            <input type="text" class="form-control" id="EarnFollowCoin1" name="EarnFollowCoin" placeholder="Earn Follow Coin" value="{{earn_follow}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="spendFollowCoin">Spend Follow Coin</label>
+                            <input type="text" class="form-control" id="spendFollowCoin1" name="spendFollowCoin" placeholder="Spend Follow Coin" value="{{spen_follow}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="RefferralCoin">Refferral Coin</label>
+                            <input type="text" class="form-control" id="RefferralCoin1" name="RefferralCoin" placeholder="Refferral Coin" value="{{referrel_coin}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="DefaultCoin">Default Coin</label>
+                            <input type="text" class="form-control" id="DefaultCoin1" name="DefaultCoin" placeholder="Default Coin" value="{{default_coin}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="FromAddCoin">From Add Coin</label>
+                            <input type="text" class="form-control" id="FromAddCoin1" name="FromAddCoin" placeholder="From Add Coin" value="{{from_add_coin}}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submit_3">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+    <!-- Url path -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>App Data Coin Detail</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item "> App Data</li>
+                                <li class="breadcrumb-item active">App Data Coin Detail</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+            </div>
+            {% endfor %}
+            
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"> App Data Coin Detail List
+                                </h3>
+                            </div>
+                        </div>
+                        <form
+                            style="margin-top: -20px; border: 1px solid grey; border-radius: 0px 0px 5px 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <div class="card-body">
+                                <div class="form-group" style="margin-bottom: 35px;">
+                                    <button type="button" class="btn btn-outline-primary btn-block" style="float: right; width: 80px;" data-toggle="modal" data-target="#exampleModal"> Edit
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="EarnLikeCoin">Earn Like Coin</label>
+                                    <b class="form-control" id="EarnLikeCoin"> {{earn_like}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="spendLikeCoin">Spend Like Coin</label>
+                                    <b class="form-control" id="spendLikeCoin"> {{spend_like}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="EarnFollowCoin">Earn Follow Coin</label>
+                                    <b class="form-control" id="EarnFollowCoin"> {{earn_follow}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="spendFollowCoin">Spend Follow Coin</label>
+                                    <b class="form-control" id="spendFollowCoin"> {{spen_follow}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="RefferralCoin">Refferral Coin</label>
+                                    <b class="form-control" id="RefferralCoin"> {{referrel_coin}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="DefaultCoin">Default Coin</label>
+                                    <b class="form-control" id="DefaultCoin"> {{default_coin}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="FromAddCoin">From Add Coin</label>
+                                    <b class="form-control" id="FromAddCoin"> {{from_add_coin}} </b>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/appdata_coindetails.js' %}"></script>
+{% endblock %}

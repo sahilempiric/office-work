@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User List
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- ADD USER MODEL -->
+<form method="POST" action="">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="user_id">User ID</label>
+                            <input type="text" name="user_id" class="form-control" id="user_id_1" placeholder="User ID" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" class="form-control" id="username_1" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="total_coin">Total Coin</label>
+                            <input type="number" name="total_coin" class="form-control" id="total_coin_1" placeholder="Total Coin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="referral_code">Referral Code</label>
+                            <input type="text" name="referral_code" class="form-control" id="referral_code_1" placeholder="Referral Code" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_purchased">User Purchased</label>
+                            <select name="user_purchased" class="custom-select" required="" id="user_purchased_1">
+                                <option value="1" selected="">Purchased</option>
+                                <option value="0">Not Purchased</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_referred">User Referred</label>
+                            <select name="user_referred" class="custom-select" required="" id="user_referred_1">
+                                <option value="1" selected="">Referred</option>
+                                <option value="0">Not Referred</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_status">User Status</label>
+                            <select name="user_status" class="custom-select" required="" id="user_status_1">
+                                <option value="1" selected="">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submit_1_1">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- EDIT USER MODAL -->
+
+<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="form-group total_coin_hs">
+                        <label for="total_coin">Total Coin</label>
+                        <input type="text" name="total_coin" class="form-control" value="" id="total_coin" placeholder="Total Coin">
+                    </div>
+                    <div class="form-group">
+                        <label for="user_status">User Status</label>
+                        <select name="user_status" class="custom-select" required  id="user_status">
+                            <option value="1" selected="">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save_user">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- MODAL 2 -->
+<!-- DELETE Modal -->
+<div class="modal fade" id="deleteuser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete User List Data</h5>
+        </div>
+        <div class="modal-body">
+          Are you sure to delete data?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="dlt_user">Delete</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px; background-color: white;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>User List</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"><a href="{% url 'home' %}"> Home </a></li>
+                                <li class="breadcrumb-item ">User List</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+
+                {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                {{message}}
+                </div>
+                {% endfor %}
+           
+            <div class="container-fluid">
+                <div class="card-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <form action="" method="GET">
+                        <div class="row">
+                            <div style="width: 101px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="button" class="btn btn-outline-primary btn-block btn-sm"
+                                data-toggle="modal" data-target="#exampleModal">Add User</button>
+                            </div>
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                    <input type="text" name="user_list_startdate" value="{{start_date}}" class="form-control datetimepicker-input" id="user_start_date" data-target="#reservationdate" style="width: 50px;" placeholder="Start Date">
+                                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                                    <input type="text" name="user_list_enddate" value="{{end_date}}" class="form-control datetimepicker-input" id="user_end_date" data-target="#reservationdate2" style="width: 50px;" placeholder="End Date">
+                                    <div class="input-group-append " data-target="#reservationdate2" data-toggle="datetimepicker">
+                                        <div class="input-group-text "><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 223px; margin-bottom: 15px;">
+                                <input type="text" name="user_list_usertype" value="{{search_field}}" class="form-control" id="user_type_1" 
+                                    placeholder="User_id/Username" >
+                            </div>
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <select name="user_list_usertype_select" class="custom-select" id="option_1">
+                                    <option value="0"
+                                    {% if '0' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >User ID</option>
+                                    <option value="1"
+                                    {% if '1' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >Parent ID</option>
+                                    <option value="2"
+                                    {% if '2' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >Username</option>
+                                    <option value="3"
+                                    {% if '3' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >Refferal Code</option>
+                                </select>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;" >
+                                <button type="submit" class="btn btn-outline-primary btn-block btn-sm" id="submit_1">Submit</button>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="reset" class="btn btn-outline-primary btn-block btn-sm" id="input_reset_1">RESET</button>
+                            </div>
+                        </div>
+                    </form>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example" class="table table-bordered table-hover dataTable dtr-inline">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>User ID</th>
+                                            <th>Parent ID</th>
+                                            <th>Username</th>
+                                            <th>Date of Registation</th>
+                                            <th>Total Coins</th>
+                                            <th>Refferal Code</th>
+                                            <th>From App</th>
+                                            <th>Purchased</th>
+                                            <th>Reffered</th>
+                                            <th>Status</th>
+                                            <th style="width: 60px;">Action</th>
+                                        </tr>
+                                    <tbody class="tbody">
+                                        {% if users %}
+                                        {% for i in users %}
+                                            <tr id="{{i.user_id}}">
+                                            <td>{{i.user_id}}</td>
+                                            <td>{{i.parent_id}}</td>
+                                            <td>{{i.username}}</td>
+                                            <td>{{i.created_at}}</td>
+                                            <td>{{i.total_coins}}</td>
+                                            <td>{{i.referral_code}}</td>
+                                            <td>
+                                                {% if i.fromapp == '0' %}
+                                                    <span class="badge bg-info">Web</span>
+                                                    {% endif %}
+                                                    {% if i.fromapp == '1' %}
+                                                    <span class="badge bg-secondary">App</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if i.is_purchase == '0' %}
+                                                    <span class="badge bg-danger">Not Purchased</span>
+                                                    {% endif %}
+                                                    {% if i.is_purchase == '1' %}
+                                                    <span class="badge bg-success">Purchased</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if i.is_referred == '0' %}
+                                                    <span class="badge bg-danger">Not Reffered</span>
+                                                    {% endif %}
+                                                    {% if i.is_referred == '1' %}
+                                                    <span class="badge bg-success">Reffered</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if i.status == '0' %}
+                                                    <span class="badge bg-danger">Not Active</span>
+                                                {% endif %}
+                                                {% if i.status == '1' %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% endif %}
+                                            </td>
+                                            <td >
+                                                <div class="row">
+                                                    <div
+                                                        style="width: 35px;margin-bottom: 10px;margin-top: 4px; padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="edituser_{{i.user_id}}" class="btn btn-outline-primary btn-block btn-sm edit_user" ><i class="fas fa-edit"></i></button>
+                                                    </div>
+                                                    <div
+                                                        style="width: 35px;margin-bottom: 10px;margin-top: 4px; padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="dltuser_{{i.user_id}}" class="btn btn-outline-danger btn-block btn-sm dlt_user"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <td colspan="13" style="text-align:center;"><h2> No Record Found </h2></td>
+                                        {% endif %}
+                                    </tbody>
+                                    </thead>
+                                </table>
+                                {% if users.paginator.num_pages > 1 %}
+                                <div class="text-center">
+                                    <ul class="pagination">
+                                    
+                                    {% if users.has_previous %}
+                                    <li class="page-item "><a href="?page={{ users.previous_page_number|add:'-4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">«</a></li>
+                                    {% endif %}
+                                    
+                                    {% if users.number|add:'-4' > 1 %}
+                                    <li class="page-item "><a href="?page= 1 " class="page-link">…</a></li>
+                                    {% endif %}
+                                    
+                                    {% for i in users.paginator.page_range %}
+                                    {% if users.number == i %}
+                                    <li class="active page-item"><a  class="page-link">{{ i }}</a></li>
+                                    {% elif i > users.number|add:'-5' and i < users.number|add:'10' %}
+                                    <li class="page-item "><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if users.paginator.num_pages > users.number|add:'0' %}
+                                    <li class="page-item "><a href="?page={{ users.paginator.num_pages }}" class="page-link">…</a></li>
+                                    {% endif %}
+
+                                    {% if users.has_next %}
+                                    <li class="page-item "><a href="?page={{ users.next_page_number|add:'4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">»</a></li>
+                                    
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/user_list.js' %}"></script>
+{% endblock %}

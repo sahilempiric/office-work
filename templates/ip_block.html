@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}
+IP Block
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- MODEL -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add IP Address</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="ip_address">IP Address</label>
+                            <input type="text" name="ip_address" class="form-control" id="ip_address" placeholder="IP Address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select name="status" class="custom-select" required>
+                                <option value="0" selected="">Active</option>
+                                <option value="1">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- DELETE Modal -->
+<div class="modal fade" id="deleteipblock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete IP Block Data</h5>
+            </div>
+            <div class="modal-body">
+            Are you sure to delete data?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="dlt_ipblock">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>IP Address</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"><a href="{% url 'home' %}"> Home </a></li>
+                                <li class="breadcrumb-item ">IP Block</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+            </div>
+            {% endfor %}
+
+            <div class="container-fluid">
+                <div class="card-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <!-- <div class=""></div> -->
+                        <div class="row">
+                            <div style="width: 150px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="submit" class="btn btn-outline-primary btn-block btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                    Add IP Address</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example" class="table table-bordered table-hover dataTable dtr-inline">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>IP Address</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    <tbody class="tbody">
+                                        {% if IPBlock %}
+                                        {% for i in IPBlock %}
+                                        <tr id="{{i.id}}">
+                                            <td>{{i.ip}}</td>
+                                            <td>
+                                                {% if i.status == '0' %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% endif %}
+                                                {% if i.status == '1' %}
+                                                    <span class="badge bg-danger">Not Active</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="dltipblock_{{i.id}}" class="btn btn-outline-danger btn-block btn-sm dlt_ip_block"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <td colspan="13" style="text-align:center;"><h2> No Record Found </h2></td>
+                                        {% endif %}
+                                    </tbody>
+                                    </thead>
+                                </table>
+                                {% if IPBlock.paginator.num_pages > 1 %}
+
+                                <div class="text-center">
+                                    <ul class="pagination">
+                                    
+                                    {% if IPBlock.has_previous %}
+                                    <li class="page-item "><a href="?page={{ IPBlock.previous_page_number|add:'-4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">«</a></li>
+                                    {% endif %}
+                                    
+                                    {% if IPBlock.number|add:'-4' > 1 %}
+                                    <li class="page-item "><a href="?page= 1 " class="page-link">…</a></li>
+                                    {% endif %}
+                                    
+                                    {% for i in IPBlock.paginator.page_range %}
+                                    {% if IPBlock.number == i %}
+                                    <li class="active page-item"><a  class="page-link">{{ i }}</a></li>
+                                    {% elif i > IPBlock.number|add:'-5' and i < IPBlock.number|add:'10' %}
+                                    <li class="page-item "><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if IPBlock.paginator.num_pages > IPBlock.number|add:'0' %}
+                                    <li class="page-item "><a href="?page={{ IPBlock.paginator.num_pages }}" class="page-link">…</a></li>
+                                    {% endif %}
+    
+                                    {% if IPBlock.has_next %}
+                                    <li class="page-item "><a href="?page={{ IPBlock.next_page_number|add:'4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">»</a></li>
+                                    
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/ip_block.js' %}"></script>
+{% endblock %}

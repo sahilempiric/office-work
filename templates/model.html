@@ -1,0 +1,65 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="user_purchased">Type<span style="color: red;">*</span></label>
+                        <select name="user_purchased" class="custom-select" required="">
+                            <option value="0" selected="">Like</option>
+                            <option value="1">Follow</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_id">User ID<span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="user_id" placeholder="User ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="custom_user_id">Custom User ID</label>
+                        <input type="text" class="form-control" id="custom_user_id" placeholder="Custom User ID"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="needed">Needed<span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="needed" placeholder="Needed" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="short_code">Short Code<span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="short_code" placeholder="Short Code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="post_id">Post ID<span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="post_id" placeholder="Post ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username<span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image</label><br>
+                        <!-- <img src="http://localhost/insta_like_follow/assets/img/admin_60050018d33fa.jpg" alt="profile picture" width="200px;"> -->
+                        <input type="file" name="image" class="form-control" id="image">
+                    </div>
+                    <div class="form-group">
+                        <label for="user_purchased">Other Status<span style="color: red;">*</span></label>
+                        <select name="user_purchased" class="custom-select" required="">
+                            <option value="0" selected="">Color Status</option>
+                            <option value="1">Active</option>
+                            <option value="1">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

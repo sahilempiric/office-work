@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AppData-Maintenence
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<!-- Model -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit App Data Maintenence</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="Maintenence_Message">Maintenence Message</label>
+                            <input type="text" name="maintenence_msg" class="form-control" id="EarnLikeCoin3" placeholder="Maintenence_Message" value="{{app_data_dd.maintenence_message}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="Maintenece_Mode">Maintenece Mode</label><br>
+                            <div class="form-check">
+                            <input type="checkbox" name="like" id="like" class="form-check-input"
+                            {% if 'like' in maintenence_mode %}
+                            checked
+                            {% endif %}
+                            >
+                            <label for="like" class="form-check-label"> Like </label>
+                            <input type="checkbox" name="follow" id="follow" class="form-check-input" style="margin-left: 10px;"
+                            {% if 'follow' in maintenence_mode %}
+                            checked
+                            {% endif %}>
+                            <label for="follow" class="form-check-label" style="margin-left: 35px;"> Follow </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Update_Mode">Update Mode</label>
+                            <select name="update_mode" class="custom-select" id="Update_Mode3" >
+                                <option value="0"
+                                {% if 'none' in app_data_dd.update_mode %}
+                                selected
+                                {% endif %}
+                                >None</option>
+                                <option value="1"
+                                {% if 'flexible' in app_data_dd.update_mode %}
+                                selected
+                                {% endif %}
+                                >Flexible</option>
+                                <option value="2"
+                                {% if 'immiediate' in app_data_dd.update_mode %}
+                                selected
+                                {% endif %}
+                                >Immiediate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Update_Url">Update Url</label>
+                            <input type="url" name="update_url" class="form-control" id="UpdateUrl3" placeholder="Update Url" value="{{app_data_dd.update_url}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="Update_Message">Update Message</label>
+                            <textarea type="text" name="update_message" class="form-control" id="Update_Message3" placeholder="Update Message">{{app_data_dd.update_message}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Payment_Method">Payment Method</label><br>
+                            <div class="form-check">
+                            <input type="checkbox" name="inapp" class="form-check-input" id="inApp" 
+                            {% if 'inapp' in payment_method %}
+                            checked
+                            {% endif %}
+                            >
+                            <label for="inApp" class="form-check-label" > InApp </label>
+                            
+                            <input type="checkbox" class="form-check-input" name="paypal" id="paypal" style="margin-left: 10px;"
+                            {% if 'paypal' in payment_method %}
+                            checked
+                            {% endif %}
+                            >
+                            <label for="paypal" class="form-check-label" style="margin-left: 35px;"> Paypal </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submit3">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+    <!-- Url path -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>App Data Maintenence</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"> App Data</li>
+                                <li class="breadcrumb-item active">App Data Maintenence</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+            </div>
+            {% endfor %}
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"> App Data Maintenence
+                                </h3>
+                            </div>
+                        </div>
+                        <form style="margin-top: -20px; border: 1px solid grey; border-radius: 0px 0px 5px 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <div class="card-body">
+                                <div class="form-group" style="margin-bottom: 35px;">
+                                    <button type="button" class="btn btn-outline-primary btn-block" style="float: right; width: 80px;" data-toggle="modal" data-target="#exampleModal"> Edit </button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Maintenence_Message">Maintenence Message</label>
+                                    <b class="form-control" id="Maintenence_Message" > {{app_data_dd.maintenence_message}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Maintenece_Mode">Maintenece Mode</label><br>
+                                    {% if 'like' in maintenence_mode  %}
+                                    <i class="fas fa-heart" style="color: red"></i>
+                                    <span for="like"> Like </span>&nbsp;
+                                    {% endif %}
+                                    {% if 'follow' in maintenence_mode  %}
+                                    <i class="fas fa-user-plus" style="color: rgb(86, 138, 206)"></i>
+                                    <span for="follow"> Follow </span>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="Update_Mode">Update Mode</label>
+                                    <b name="Update_Mode" class="form-control" >
+                                        {% if app_data_dd.update_mode == "none" %}
+                                        None
+                                        {% endif %}
+                                        {% if app_data_dd.update_mode == "flexible" %}
+                                        Flexible
+                                        {% endif %}
+                                        {% if app_data_dd.update_mode == "immiediate" %}
+                                        Immiediate
+                                        {% endif %}
+                                    </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Update_Url">Update Url</label>
+                                    <b class="form-control" id="Update_Url"> {{app_data_dd.update_url}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Update_Message">Update Message</label>
+                                    <textarea readonly class="form-control" id="Update_Message" style="background-color: white;"> {{app_data_dd.update_message}} </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Payment_Method">Payment Method</label><br>
+                                    <div class="row-sm-1">
+                                    {% if 'inapp' in payment_method %}
+                                    <i class="fab fa-invision" style="color: rgb(0, 162, 255); font-size: 30px; vertical-align: -6px;"></i>
+                                    <span for="inApp"> InApp </span>
+                                    {% endif %}
+                                    {% if 'paypal' in payment_method %}
+                                    <i class="fab fa-cc-paypal" style="color: rgb(0, 122, 192); font-size: 30px; vertical-align: -6px; margin-left: 5px;"></i> 
+                                    <span for="paypal"> Paypal </span>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/appdata_maintenence.js' %}"></script>
+{% endblock %}

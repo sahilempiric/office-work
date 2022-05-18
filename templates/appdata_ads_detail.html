@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+AppData-ADS 
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- Model -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit App Ads Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="Game_Id">Game ID</label>
+                            <input type="text" name="game_id" class="form-control" id="Game_Id4" placeholder="Game ID" value="{{app_data_ads.game_id}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="Banner_Id">Banner ID</label>
+                            <input type="text" name="banner_id" class="form-control" id="Banner_Id4" placeholder="Banner ID" value="{{app_data_ads.banner_id}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="Initial_Id">Initial ID</label>
+                            <input type="text" name="initial_id" class="form-control" id="Initial_Id4" placeholder="Initial ID" value="{{app_data_ads.initial_id}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="Save" class="btn btn-primary" id="submit4">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <!-- Url path -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>App Ads Details</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"> App Data</li>
+                                <li class="breadcrumb-item active">App Ads details</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"> App Ads details
+                                </h3>
+                            </div>
+                        </div>
+                        <form
+                            style="margin-top: -20px; border: 1px solid grey; border-radius: 0px 0px 5px 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <div class="card-body">
+                                <div class="form-group" style="margin-bottom: 35px;">
+                                    <button type="button" class="btn btn-outline-primary btn-block" style="float: right; width: 80px;" data-toggle="modal" data-target="#exampleModal"> 
+                                        Edit </button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Game_Id">Game ID</label>
+                                    <b class="form-control" id="Game_Id" > {{app_data_ads.game_id}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Banner_Id">Banner ID</label>
+                                    <b class="form-control" id="Banner_Id" > {{app_data_ads.banner_id}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Initial_Id">Initial ID</label>
+                                    <b class="form-control" id="Initial_Id" > {{app_data_ads.initial_id}} </b>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/appdata_ads_details.js' %}"></script>
+{% endblock %}

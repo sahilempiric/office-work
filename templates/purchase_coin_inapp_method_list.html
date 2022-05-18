@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Purchase Coin List
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<!-- MODEL -->
+<!-- DELETE INAPP PURCHASE COIN MODAL -->
+<div class="modal fade" id="deleteModalinapp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Purchase Coin InApp Data</h5>
+        </div>
+        <div class="modal-body">Are you sure to delete data?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="dlt_pc_inapp">Delete</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Purchase Coin List</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"><a href="{% url 'home' %}"> Home </a></li>
+                                <li class="breadcrumb-item ">InApp Purchase Coin List</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <!-- Active Order -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row" >
+                            <div style="width: 165px; margin-bottom: 10px; margin-top: 4px;" id="purchase_1">
+                                <button class="btn btn-outline-secondary btn-block btn-sm">PayPal/RazorPay</button>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;" id="purchase_2">
+                                <button class="btn btn-outline-info btn-block btn-sm">InApp</button>
+                            </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example" class="table table-bordered table-hover dataTable dtr-inline">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>User ID</th>
+                                            <th>Username</th>
+                                            <th>Order ID</th>
+                                            <th>Coin</th>
+                                            <th>Purchase Time</th>
+                                            <th>Country Code</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    <tbody class="tbody">
+                                        {% if purchase_coin_inapp_list %}
+                                        {% for i in purchase_coin_inapp_list %}
+                                            <tr id="{{i.id}}">
+                                            <td>{{i.user_id}}</td>
+                                            <td>{{i.username}}</td>
+                                            <td>{{i.orderId}}</td>
+                                            <td>{{i.productId}}</td>
+                                            <td>{{i.purchaseTime}}</td>
+                                            <td>{{i.regionCode}}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="deletpcinapp_{{i.id}}" class="btn btn-outline-danger btn-block btn-sm dlt_pc_inapp"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <td colspan="13" style="text-align:center;"><h2> No Record Found </h2></td>
+                                        {% endif %}
+                                    </tbody>
+                                    </thead>
+                                </table>
+                                {% if purchase_coin_inapp_list.paginator.num_pages > 1 %}
+                                <div class="text-center">
+                                    <ul class="pagination">
+                                    
+                                    {% if purchase_coin_inapp_list.has_previous %}
+                                    <li class="page-item "><a href="?page={{ purchase_coin_inapp_list.previous_page_number|add:'-4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">«</a></li>
+                                    {% endif %}
+                                    
+                                    {% if purchase_coin_inapp_list.number|add:'-4' > 1 %}
+                                    <li class="page-item "><a href="?page= 1 " class="page-link">…</a></li>
+                                    {% endif %}
+                                    
+                                    {% for i in purchase_coin_inapp_list.paginator.page_range %}
+                                    {% if purchase_coin_inapp_list.number == i %}
+                                    <li class="active page-item"><a  class="page-link">{{ i }}</a></li>
+                                    {% elif i > purchase_coin_inapp_list.number|add:'-5' and i < purchase_coin_inapp_list.number|add:'10' %}
+                                    <li class="page-item "><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if purchase_coin_inapp_list.paginator.num_pages > purchase_coin_inapp_list.number|add:'0' %}
+                                    <li class="page-item "><a href="?page={{ purchase_coin_inapp_list.paginator.num_pages }}" class="page-link">…</a></li>
+                                    {% endif %}
+    
+                                    {% if purchase_coin_inapp_list.has_next %}
+                                    <li class="page-item "><a href="?page={{ purchase_coin_inapp_list.next_page_number|add:'4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">»</a></li>
+                                    
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/purchase_coin.js' %}"></script>
+<script src="{% static 'js/purchase_coin_inapp_method.js' %}"></script>
+{% endblock %}

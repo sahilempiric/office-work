@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Complete Order
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<!-- MODEL -->
+    <!-- Add complete Order Model -->
+    <div class="modal fade" id="editcompleteorder" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit complete Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="needed">Needed<span style="color: red;">*</span></label>
+                            <input type="text" class="form-control" id="needed" placeholder="Needed" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="received">Received <span style="color: red;">*</span></label>
+                            <input type="text" class="form-control" id="received" placeholder="recieved" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save_completeorder">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- MODAL 2 -->
+<!-- DELETE Modal -->
+<div class="modal fade" id="deletecompleteorder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete complete Order Data</h5>
+            </div>
+            <div class="modal-body">
+            Are you sure to delete data?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="dlt_completeorder">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px; background-color: white;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Order List</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"><a href="{% url 'home' %}"> Home </a></li>
+                                <li class="breadcrumb-item ">Complete Order</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <!-- Active Order -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        {% include 'buttons.html' %}
+                        <form action="" method="GET">
+                        <div class="row">
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                    <input type="text" name="complete_order_startdate" value="{{start_date}}" class="form-control datetimepicker-input" id="complete_order_start_date" data-target="#reservationdate" style="width: 50px;" placeholder="Start Date">
+                                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                                    <input type="text" name="complete_order_enddate" value="{{end_date}}" class="form-control datetimepicker-input" id="complete_order_end_date" data-target="#reservationdate2" style="width: 50px;" placeholder="End Date">
+                                    <div class="input-group-append " data-target="#reservationdate2" data-toggle="datetimepicker">
+                                        <div class="input-group-text "><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 223px; margin-bottom: 15px;">
+                                <input type="text" name="complete_order_usertype" value="{{search_field}}" class="form-control" id="user_type_6" placeholder="Enter Details(ex: User_id)" >
+                            </div>
+                            <div class="form-group" style="width: 200px; margin-bottom: 15px;">
+                                <select name="complete_order_usertype_select" class="custom-select" >
+                                    <option value="0"
+                                    {% if '0' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >User ID</option>
+                                    <option value="1"
+                                    {% if '1' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >Custome User ID</option>
+                                    <option value="2"
+                                    {% if '2' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >Post ID</option>
+                                    <option value="3"
+                                    {% if '3' in search_type %}
+                                    selected
+                                    {% endif %}
+                                    >Short Code</option>
+                                </select>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="submit" class="btn btn-outline-primary btn-block btn-sm">Submit</button>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="reset" class="btn btn-outline-primary btn-block btn-sm" id="input_reset_6">RESET</button>
+                            </div>
+                        </div>
+                        </form>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example" class="table table-bordered table-hover dataTable dtr-inline">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Type</th>
+                                            <th>User ID</th>
+                                            <th>Custom User ID</th>
+                                            <th>Post ID</th>
+                                            <th>Short Code</th>
+                                            <th>Needed</th>
+                                            <th>Received</th>
+                                            <th>Image URL</th>
+                                            <th>No Like Log</th>
+                                            <th>From App</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        <tbody class="tbody">
+                                            {% if complete_order %}
+                                            {% for i in complete_order %}
+                                                <tr id="{{i.id}}">
+                                                    <td>
+                                                        {% if i.type == '0' %}
+                                                        <span class="badge bg-danger">Like</span>
+                                                        {% endif %}
+                                                        {% if i.type == '1' %}
+                                                        <span class="badge bg-info">Follow</span>
+                                                        {% endif %}
+                                                    </td>
+                                                <td>{{i.user_id}}</td>
+                                                <td>{{i.custom_user_id}}</td>
+                                                <td>{{i.post_id}}</td>
+                                                <td>{{i.short_code}}</td>
+                                                <td>{{i.needed}}</td>
+                                                <td>{{i.recieved}}</td>
+                                                <td>
+                                                    {% if i.type == '0' %}
+                                                    <img src="{% static 'img/like/' %}{{i.image_url}}" alt="Image URL" style="width: 100px">
+                                                    {% endif %}
+                                                    {% if i.type == '1' %}
+                                                    <img src="{% static 'img/follow/' %}{{i.image_url}}" alt="Image URL" style="width: 100px">
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{i.no_like_log}}</td>
+                                                <td>
+                                                    {% if i.fromapp == '0' %}
+                                                        <span class="badge bg-info">Web</span>
+                                                        {% endif %}
+                                                        {% if i.fromapp == '1' %}
+                                                        <span class="badge bg-secondary">App</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if i.order_status == '0' %}
+                                                        <span class="badge bg-danger">Deactive</span>
+                                                        {% endif %}
+                                                        {% if i.order_status == '1' %}
+                                                        <span class="badge bg-success">Active</span>
+                                                    {% endif %}
+                                                </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="editcompleteorder_{{i.id}}" class="btn btn-outline-primary btn-block btn-sm edit_complete_order"><i class="fas fa-edit"></i></button>
+                                                    </div>
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="dltcompleteorder_{{i.id}}" class="btn btn-outline-danger btn-block btn-sm dlt_complete_order"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <td colspan="13" style="text-align:center;"><h2> No Record Found </h2></td>
+                                        {% endif %}
+                                    </tbody>
+                                    </thead>
+                                </table>
+                                {% if complete_order.paginator.num_pages > 1 %}
+                                <div class="text-center">
+                                    <ul class="pagination">
+                                    
+                                    {% if complete_order.has_previous %}
+                                    <li class="page-item "><a href="?page={{ complete_order.previous_page_number|add:'-4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">«</a></li>
+                                    {% endif %}
+                                    
+                                    {% if complete_order.number|add:'-4' > 1 %}
+                                    <li class="page-item "><a href="?page= 1 " class="page-link">…</a></li>
+                                    {% endif %}
+                                    
+                                    {% for i in complete_order.paginator.page_range %}
+                                    {% if complete_order.number == i %}
+                                    <li class="active page-item"><a  class="page-link">{{ i }}</a></li>
+                                    {% elif i > complete_order.number|add:'-5' and i < complete_order.number|add:'10' %}
+                                    <li class="page-item "><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if complete_order.paginator.num_pages > complete_order.number|add:'0' %}
+                                    <li class="page-item "><a href="?page={{ complete_order.paginator.num_pages }}" class="page-link">…</a></li>
+                                    {% endif %}
+    
+                                    {% if complete_order.has_next %}
+                                    <li class="page-item "><a href="?page={{ complete_order.next_page_number|add:'4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">»</a></li>
+                                    
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/complete_order.js' %}"></script>
+<script src="{% static 'js/add_order_model.js' %}"></script>
+{% endblock %}

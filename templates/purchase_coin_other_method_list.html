@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Purchase Coin List
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- MODEL 1 -->
+    <!-- EDIT PURCHASED COIN Model -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit User Payment Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="payment_coin">Purchase Coin</label>
+                            <input type="text" name="purchase_coin" class="form-control input_purchased_coin" value="" id="purchased_coin" placeholder="Payment Coin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country_code">Country Code</label>
+                            <input type="text" name="country_code" class="form-control" id="country_code" value="" placeholder="Country Code" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary save_pc_other" id="save_pc">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- MODAL 2 -->
+<!-- DELETE Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Purchase Coin Data</h5>
+      </div>
+      <div class="modal-body">
+        Are you sure to delete data?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="dlt_pc_other">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Purchase Coin List</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"><a href="{% url 'home' %}"> Home </a></li>
+                                <li class="breadcrumb-item ">PayPal/RazorPay Purchase Coin List</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <!-- Active Order -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div style="width: 165px; margin-bottom: 10px; margin-top: 4px;" id="purchase_1">
+                                <button class="btn btn-outline-secondary btn-block btn-sm" >PayPal/RazorPay</button>
+                            </div>
+                            <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;" id="purchase_2">
+                                <button class="btn btn-outline-info btn-block btn-sm" >InApp</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example" class="table table-bordered table-hover dataTable dtr-inline">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>User ID</th>
+                                            <th>Username</th>
+                                            <th>Payment ID/Transaction ID</th>
+                                            <th>Payment Type</th>
+                                            <th>Purchase Coin</th>
+                                            <th>Payment Time</th>
+                                            <th>Country Code</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    <tbody class="tbody">
+                                        {% if purchase_coin_other_method_list %}
+                                        {% for i in purchase_coin_other_method_list %}
+                                            <tr id="{{i.id}}">
+                                            <td>{{i.user_id}}</td>
+                                            <td>{{i.username}}</td>
+                                            <td>{{i.transaction_id}}</td>
+                                            <td>
+                                                {% if i.payment_method == '0' %}
+                                                    <span class="badge bg-primary">Paypal</span>
+                                                {% endif %}
+                                                {% if i.payment_method == '1' %}
+                                                    <span class="badge bg-info">Razorpay</span>
+                                                {% endif %}
+                                                {% if i.payment_method == '2' %}
+                                                    <span class="badge bg-success">InApp</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{i.purchased_coin}}</td>
+                                            <td>{{i.payment_time}}</td>
+                                            <td>{{i.country_code}}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset"  id="editpcother_{{i.id}}" class="btn btn-outline-primary btn-block btn-sm edit_pc_other" ><i class="fas fa-edit"></i></button>
+                                                    </div>
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset"  id="deletepcother_{{i.id}}" class="btn btn-outline-danger btn-block btn-sm dlt_pc_other" ><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <td colspan="13" style="text-align:center;"><h2> No Record Found </h2></td>
+                                        {% endif %}
+                                    </tbody>
+                                    </thead>
+                                </table>
+                                {% if purchase_coin_other_method_list.paginator.num_pages > 1 %}
+                                <div class="text-center">
+                                    <ul class="pagination">
+                                    
+                                    {% if purchase_coin_other_method_list.has_previous %}
+                                    <li class="page-item "><a href="?page={{ purchase_coin_other_method_list.previous_page_number|add:'-4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">«</a></li>
+                                    {% endif %}
+                                    
+                                    {% if purchase_coin_other_method_list.number|add:'-4' > 1 %}
+                                    <li class="page-item "><a href="?page= 1 " class="page-link">…</a></li>
+                                    {% endif %}
+                                    
+                                    {% for i in purchase_coin_other_method_list.paginator.page_range %}
+                                    {% if purchase_coin_other_method_list.number == i %}
+                                    <li class="active page-item"><a  class="page-link">{{ i }}</a></li>
+                                    {% elif i > purchase_coin_other_method_list.number|add:'-5' and i < purchase_coin_other_method_list.number|add:'10' %}
+                                    <li class="page-item "><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if purchase_coin_other_method_list.paginator.num_pages > purchase_coin_other_method_list.number|add:'0' %}
+                                    <li class="page-item "><a href="?page={{ purchase_coin_other_method_list.paginator.num_pages }}" class="page-link">…</a></li>
+                                    {% endif %}
+    
+                                    {% if purchase_coin_other_method_list.has_next %}
+                                    <li class="page-item "><a href="?page={{ purchase_coin_other_method_list.next_page_number|add:'4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">»</a></li>
+                                    
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/purchase_coin.js' %}"></script>
+<script src="{% static 'js/purchase_coin_other_method.js' %}"></script>
+{% endblock %}

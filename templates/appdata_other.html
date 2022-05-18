@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AppData-Other
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- Model -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Other Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="Play_Store_Version">Play Store Version</label>
+                            <input type="text" name="play_store_version" class="form-control" id="Play_Store_Version5" placeholder="Play Store Version" value="{{app_data_other.playstore_version}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="Web_Login">Web Login</label>
+                            <select name="Web_Login" class="custom-select" id="Web_Login5">
+                                <option value="1" 
+                                {% if '1' in app_data_other.web_login %}
+                                selected
+                                {% endif %}
+                                >Web Login</option>
+                                <option value="0"
+                                {% if '0' in app_data_other.web_login %}
+                                selected
+                                {% endif %}
+                                >App Login</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Web_View">Web View</label>
+                            <select name="Web_View" class="custom-select" id="Web_View5">
+                                <option value="1"
+                                {% if '1' in app_data_other.web %}
+                                selected
+                                {% endif %}
+                                >Web View</option>
+                                <option value="0"
+                                {% if '0' in app_data_other.web %}
+                                selected
+                                {% endif %}
+                                >App View</Video></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="User_Agent">User Agent</label>
+                            <textarea type="text" name="user_agent" class="form-control" id="User_Agent5">{{app_data_other.user_agent}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Share_Url">Share Url</label>
+                            <input type="url" name="share_url" class="form-control" id="Share_Url5" placeholder="Share Url" value="{{app_data_other.share_url}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" class="form-control" id="email5" placeholder="Email" value="{{app_data_other.email}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="website">WebSite</label>
+                            <input type="url" name="website" class="form-control" id="website5" placeholder="WebSite" value="{{app_data_other.website}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="Privacy_Policy">Privacy Policy</label>
+                            <input type="url" name="privacy_policy" class="form-control" id="Privacy_Policy5" placeholder="Privacy Policy URL" value="{{app_data_other.privacy_policy}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="facebook">Facebook</label>
+                            <input type="text" name="facebook" class="form-control" id="facebook5" placeholder="Facebook" value="{{app_data_other.facebook}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="instagram">Instagram</label>
+                            <input type="text" name="instagram" class="form-control" id="instagram5" placeholder="Instagram" value="{{app_data_other.instagram}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="twitter">Twitter</label>
+                            <input type="text" name="twitter" class="form-control" id="twitter5" placeholder="Twitter" value="{{app_data_other.twitter}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="telegram">Telegram</label>
+                            <input type="text" name="telegram" class="form-control" id="telegram5" placeholder="Telegram" value="{{app_data_other.telegram}}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="Rate_Dialog">Rate Dialog</label>
+                            <select name="Rate_Dialog" class="custom-select" id="Rate_Dialog5">
+                                <option value="0" 
+                                {% if '0' in app_data_other.rate_dialog %}
+                                selected
+                                {% endif %}
+                                >Hide</option>
+                                <option value="1"
+                                {% if '1' in app_data_other.rate_dialog %}
+                                selected
+                                {% endif %}
+                                >Show</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Share_Dialog">Share Dialog</label>
+                            <select name="Share_Dialog" class="custom-select" id="Share_Dialog5">
+                                <option value="0" 
+                                {% if '0' in app_data_other.share_dialog %}
+                                selected
+                                {% endif %}
+                                >Hide</option>
+                                <option value="1"
+                                {% if '1' in app_data_other.share_dialog %}
+                                selected
+                                {% endif %}
+                                >Show</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submit5">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    
+    <!-- Url path -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Other Detail</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"> App Data</li>
+                                <li class="breadcrumb-item active">Other Detail</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+            
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+            </div>
+            {% endfor %}
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"> Other Detail
+                                </h3>
+                            </div>
+                        </div>
+                        <form
+                            style="margin-top: -20px; border: 1px solid grey; border-radius: 0px 0px 5px 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <div class="card-body">
+                                <div class="form-group" style="margin-bottom: 35px;">
+                                    <button type="button" class="btn btn-outline-primary btn-block"
+                                        style="float: right; width: 80px;" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        Edit
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Play_Store_Version">Play Store Version</label>
+                                    <b class="form-control" id="Play_Store_Version"> {{app_data_other.playstore_version}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Web_Login">Web Login</label>
+                                    <b name="Web_Login" class="form-control" >
+                                        {% if app_data_other.web_login == "1" %}
+                                        Web Login
+                                        {% endif %}
+                                        {% if app_data_other.web_login == "0" %}
+                                        App login
+                                        {% endif %}
+                                    </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Web_View">Web View</label>
+                                    <b name="Web_View" class="form-control" >
+                                        {% if app_data_other.web == "1" %}
+                                        Web View
+                                        {% endif %}
+                                        {% if app_data_other.web == "0" %}
+                                        App View
+                                        {% endif %}
+                                    </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="User_Agent">User Agent</label>
+                                    <textarea readonly class="form-control" id="User_Agent" style="background-color: white;"> {{app_data_other.user_agent}} </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Share_Url">Share Url</label>
+                                    <b type="url" class="form-control" id="Share_Url" > {{app_data_other.share_url}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <b class="form-control" id="email" > {{app_data_other.email}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="website">WebSite</label>
+                                    <b class="form-control" id="website" > {{app_data_other.website}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Privacy_Policy">Privacy Policy</label>
+                                    <b class="form-control" id="Privacy_Policy" > {{app_data_other.privacy_policy}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="facebook">Facebook</label>
+                                    <b class="form-control" id="facebook" > {{app_data_other.facebook}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="instagram">Instagram</label>
+                                    <b class="form-control" id="instagram" > {{app_data_other.instagram}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="twitter">Twitter</label>
+                                    <b class="form-control" id="twitter" > {{app_data_other.twitter}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telegram">Telegram</label>
+                                    <b class="form-control" id="telegram" > {{app_data_other.telegram}} </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Rate_Dialog">Rate Dialog</label>
+                                    <b name="Rate_Dialog" class="form-control" >
+                                        {% if app_data_other.rate_dialog == "0" %}
+                                        Hide
+                                        {% endif %}
+                                        {% if app_data_other.rate_dialog == "1" %}
+                                        Show
+                                        {% endif %}
+                                    </b>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Share_Dialog">Share Dialog</label>
+                                    <b name="Share_Dialog" class="form-control" >
+                                        {% if app_data_other.share_dialog == "0" %}
+                                        Hide
+                                        {% endif %}
+                                        {% if app_data_other.share_dialog == "1" %}
+                                        Show
+                                        {% endif %}
+                                    </b>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/appdata_other.js' %}"></script>
+{% endblock %}

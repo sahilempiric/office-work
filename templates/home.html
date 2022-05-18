@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}
+HOME
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="preloader flex-column justify-content-center align-items-center">
+  <img class="animation__shake" src="{% static 'img/InstaLikeFollow.png' %}" alt="InstaLikeFollowLogo" height="160"
+      width="160">
+</div>
+
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Dashboard</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item ">Dashboard</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-info" id="user_list_box" style="cursor: pointer;">
+            <div class="inner">
+              <h3>{{user_num}}</h3>
+
+              <p>Total User</p>
+            </div>
+            <div class="icon">
+              <i class="nav-icon fas fa-users" style="margin-right: 30px"></i>
+            </div>
+            <a href="{% url 'userlist' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-danger" id="like_order_box" style="cursor: pointer;">
+            <div class="inner">
+              <h3>{{like_num}}</h3>
+
+              <p>Like Order</p>
+            </div>
+            <div class="icon">
+              <i class="nav-icon fas fa-heart" style="margin-right: 30px"></i>
+            </div>
+            <a href="{% url 'likeorder' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-warning" id="follow_order_box" style="cursor: pointer;">
+            <div class="inner">
+              <h3>{{follow_num}}</h3>
+
+              <p>Follow Orders</p>
+            </div>
+            <div class="icon">
+              <i class="nav-icon fas fa-shopping-cart" style="margin-right: 30px"></i>
+            </div>
+            <a href="{% url 'followorder' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-success" id="active_user_box" style="cursor: pointer;">
+            <div class="inner">
+              <h3>{{active_user_num}}</h3>
+
+              <p>Active Users</p>
+            </div>
+            <div class="icon">
+              <i class="nav-icon fas fa-user-friends" style="margin-right: 30px"></i>
+            </div>
+            <a href="{% url 'userlist' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-primary" id="premium_user_box" style="cursor: pointer;">
+            <div class="inner">
+              <h3>{{premium_user_num}}</h3>
+
+              <p>Premium Users</p>
+            </div>
+            <div class="icon">
+              <i class="nav-icon fas fa-user-tie" style="margin-right: 30px"></i>
+            </div>
+            <a href="{% url 'premiumuserlist' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

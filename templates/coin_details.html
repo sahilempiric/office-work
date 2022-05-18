@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Coin Details
+{% endblock %}
+
+{% block css %}
+
+tr{
+width: 5px;
+}
+
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<!-- MODEL -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Coin Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="text" name="quantity" class="form-control" id="quantity" placeholder="Quantity" value="{{coins_details.quantity}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="indian_rate">Indian Rate</label>
+                            <input type="text" name="indian_rate" class="form-control" id="indian_rate" placeholder="Indian Coin Rate" value="{{coins_details.indian_rate}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="other_rate">Other Rate</label>
+                            <input type="text" name="other_rate" class="form-control" id="other_rate" placeholder="Other Coin Rate" value="{{coins_details.other_rate}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <input type="text" name="notes" class="form-control" id="notes" placeholder="Notes" value="{{coins_details.notes}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customSwitch">Popular Status</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" name="is_popular" class="custom-control-input" id="customSwitch" 
+                                {% if '0' in is_popular %}
+                                checked
+                                {% endif %}
+                                {% if '1' in is_popular %}
+                                checked
+                                {% endif %}
+                                >
+                                <label class="custom-control-label" for="customSwitch"></label>
+                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="coin_status">Coin Status</label>
+                            <select name="coin_status" class="custom-select" >
+                                <option value="0"
+                                {% if '0' in coin_status %}
+                                selected
+                                {% endif %}
+                                >Active</option>
+                                <option value="1"
+                                {% if '1' in coin_status %}
+                                selected
+                                {% endif %}
+                                >Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Edit Coin Details -->
+<div class="modal fade" id="editcoindetail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Coin Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="text" name="quantity" class="form-control" id="quantity_coin" placeholder="Quantity" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="indian_rate">Indian Rate</label>
+                            <input type="text" name="indian_rate" class="form-control" id="indian_rate_coin" placeholder="Indian Coin Rate" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="other_rate">Other Rate</label>
+                            <input type="text" name="other_rate" class="form-control" id="other_rate_coin" placeholder="Other Coin Rate" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <input type="text" name="notes" class="form-control" id="notes_coin" placeholder="Notes" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customSwitch">Popular Status</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" name="is_popular_coin" class="custom-control-input" id="customSwitch_coin" >
+                                <label class="custom-control-label" for="customSwitch_coin"></label>
+                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="coin_status">Coin Status</label>
+                            <select name="coin_status" class="custom-select" id="coin_status_coin">
+                                <option value="0">Active</option>
+                                <option value="1">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="save_coindetail">Save Changes</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!-- MODAL 2 -->
+<!-- DELETE Modal -->
+<div class="modal fade" id="deletecoindetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete Like Order Data</h5>
+            </div>
+            <div class="modal-body">Are you sure to delete data? </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="dlt_coindetail">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- URL/PATH -->
+    <div class="content-wrapper" style="min-height: 1342.88px;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Coin Details</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active"><a href="{% url 'home' %}"> Home </a></li>
+                                <li class="breadcrumb-item ">Coin Details</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="content">
+
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+            </div>
+            {% endfor %}
+
+            <div class="container-fluid">
+                <div class="card-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row" >
+                            <div style="width: 150px; margin-bottom: 10px; margin-top: 4px;">
+                                <button type="submit" class="btn btn-outline-primary btn-block btn-sm"
+                                    data-toggle="modal" data-target="#exampleModal">Add Coin Details</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <table id="example" class="table table-bordered table-hover dataTable dtr-inline">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Quantity</th>
+                                            <th>Indian Rate</th>
+                                            <th>Other Rate</th>
+                                            <th>Notes</th>
+                                            <th>Is Popular</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    <tbody class="tbody">
+                                        {% if coins_details %}
+                                        {% for i in coins_details %}
+                                        <tr id="{{i.id}}">
+                                            <td>{{i.quantity}}</td>
+                                            <td>{{i.indian_rate}}</td>
+                                            <td>{{i.other_rate}}</td>
+                                            <td>{{i.notes}}</td>
+                                            <td>
+                                                {% if i.is_popular == '0' %}
+                                                    <span class="badge bg-danger">NOT POPULAR</span>
+                                                {% endif %}
+                                                {% if i.is_popular == '1' %}
+                                                    <span class="badge bg-success">POPULAR</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if i.coin_status == '1' %}
+                                                    <span class="badge bg-danger">Not Active</span>
+                                                {% endif %}
+                                                {% if i.coin_status == '0' %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="editcoindetail_{{i.id}}" class="btn btn-outline-primary btn-block btn-sm edit_coin_detail"><i class="fas fa-edit"></i></button>
+                                                    </div>
+                                                    <div style="width: 31px;margin-bottom: 10px;margin-top: 4px;padding-right: 0px;padding-left: 0px;margin-left: 12px;">
+                                                        <button type="reset" id="dltcoindetail_{{i.id}}" class="btn btn-outline-danger btn-block btn-sm dlt_coin_detail"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                            <td colspan="13" style="text-align:center;"><h2> No Record Found </h2></td>
+                                        {% endif %}
+                                    </tbody>
+                                    </thead>
+                                </table>
+                                {% if coins_details.paginator.num_pages > 1 %}
+                                <div class="text-center">
+                                    <ul class="pagination">
+                                    
+                                    {% if coins_details.has_previous %}
+                                    <li class="page-item "><a href="?page={{ coins_details.previous_page_number|add:'-4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">«</a></li>
+                                    {% endif %}
+                                    
+                                    {% if coins_details.number|add:'-4' > 1 %}
+                                    <li class="page-item "><a href="?page= 1 " class="page-link">…</a></li>
+                                    {% endif %}
+                                    
+                                    {% for i in coins_details.paginator.page_range %}
+                                    {% if coins_details.number == i %}
+                                    <li class="active page-item"><a  class="page-link">{{ i }}</a></li>
+                                    {% elif i > coins_details.number|add:'-5' and i < coins_details.number|add:'10' %}
+                                    <li class="page-item "><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if coins_details.paginator.num_pages > coins_details.number|add:'0' %}
+                                    <li class="page-item "><a href="?page={{ coins_details.paginator.num_pages }}" class="page-link">…</a></li>
+                                    {% endif %}
+    
+                                    {% if coins_details.has_next %}
+                                    <li class="page-item "><a href="?page={{ coins_details.next_page_number|add:'4' }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="page-link">»</a></li>
+                                    
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block content_js %}
+<script src="{% static 'js/coin_details.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,171 @@
+{% load static %}
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'home' %}" class="brand-link">
+        <img src="{% static 'img/InstaLikeFollow.png' %}" alt="InstaLikeFollow Logo"
+            class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">InstaLikeFollow</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group mt-2" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar " type="search" placeholder="Search"
+                    aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <li class="nav-item ">
+                    <a href="{% url 'home' %}" class="nav-link sidebar_selection Dashboard">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link sidebar_selection App_Data">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            App Data
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'appdatacoindetail' %}" class="nav-link">
+                                <i class="nav-icon fas fa-coins"></i>
+                                <p>App Coin Detail</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'appdataoffer' %}" class="nav-link">
+                                <i class="fas fa-tags nav-icon"></i>
+                                <p>Offer</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'appdatamaintenence' %}" class="nav-link">
+                                <i class="fas fa-users-cog nav-icon"></i>
+                                <p>Maintenence</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'appdataadsdetail' %}" class="nav-link">
+                                <i class="fas fa-ad nav-icon"></i>
+                                <p>Ads Detail</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'appdataother' %}" class="nav-link">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>Other</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link sidebar_selection Notification">
+                        <i class="nav-icon fas fa-bell"></i>
+                        <p>
+                            Notification
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item ">
+                            <a href="{% url 'dailynotification' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Daily Notification</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'sendnotification' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Send Notification</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'coindetails' %}" class="nav-link sidebar_selection Coin_Details">
+                        <i class="nav-icon fas fa-coins"></i>
+                        <p>
+                            Coin Details
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'ipblock' %}" class="nav-link sidebar_selection IP_Block">
+                        <i class="nav-icon fas fa-map-marker-alt"></i>
+
+                        <p>
+                            IP Block
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'manageprofile' %}" class="nav-link sidebar_selection Manage_Profile">
+                        <i class="nav-icon fas fa-user-circle"></i>
+                        <p>
+                            Manage Profile
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header">Other List</li>
+                <li class="nav-item">
+                    <a href="{% url 'activeorder' %}" class="nav-link sidebar_selection Order_List">
+                        <i class="nav-icon fas fa-stream"></i>
+                        <p>
+                            Order List
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'userlist' %}" class="nav-link sidebar_selection User_List">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            User List
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'premiumuserlist' %}" class="nav-link sidebar_selection Premium_User">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                        <p>
+                            Premium User
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'purchasecoin_other_method_list' %}" class="nav-link sidebar_selection Purchase_Coin_List">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Purchase Coin List
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                        <p>                                   
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav> 
+    </div>
+</aside>
+

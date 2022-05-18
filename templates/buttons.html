@@ -1,0 +1,94 @@
+<!-- Add User Model -->
+{% load static %}
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}    
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="order_type">Type<span style="color: red;">*</span></label>
+                            <select name="order_type" class="custom-select" id="select_lf" required>
+                                <option value="0" selected="">Like</option>
+                                <option value="1">Follow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_id">User ID<span style="color: red;">*</span></label>
+                            <input type="text" name="user_id" class="form-control" id="user_id_2" placeholder="User ID" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="custom_user_id">Custom User ID</label>
+                            <input type="text" name="custom_user_id" class="form-control" id="custom_user_id_2" placeholder="Custom User ID"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="needed">Needed<span style="color: red;">*</span></label>
+                            <input type="number" name="needed" class="form-control" id="needed_2" placeholder="Needed" required>
+                        </div>
+                        <div class="form-group like">
+                            <label for="short_code">Short Code<span style="color: red;">*</span></label>
+                            <input type="text" name="short_code" class="form-control" id="short_code_2" placeholder="Short Code" >
+                        </div>
+                        <div class="form-group like">
+                            <label for="post_id">Post ID<span style="color: red;">*</span></label>
+                            <input type="text" name="post_id" class="form-control" id="post_id_2" placeholder="Post ID" >
+                        </div>
+                        <div class="form-group follow">
+                            <label for="username">Username<span style="color: red;">*</span></label>
+                            <input type="text" name="username" class="form-control" id="username_2" placeholder="Username" >
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image</label><br>
+                            <!-- <img src="http://localhost/insta_like_follow/assets/img/admin_60050018d33fa.jpg" alt="profile picture" width="200px;"> -->
+                            <input type="file" name="file" class="form-control" id="file" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="order_status">Other Status<span style="color: red;">*</span></label>
+                            <select name="order_status" class="custom-select" required="" id="order_status">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submit_2_2">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div style="width: 110px; margin-bottom: 10px; margin-top: 4px;">
+        <button type="submit" class="btn btn-outline-secondary btn-block btn-sm" id="add_order" data-toggle="modal" data-target="#exampleModal">Add Order</button>
+    </div>
+    <div style="width: 100px; margin-bottom: 10px; margin-top: 4px;">
+        <a href="{% url 'allorder' %}" class="btn btn-outline-primary btn-block btn-sm">All Order</a>
+    </div>
+    <div style="width: 120px; margin-bottom: 10px; margin-top: 4px;">
+        <a href="{% url 'activeorder' %}" class="btn btn-outline-dark btn-block btn-sm">Active Order </a>
+    </div>
+    <div style="width: 110px; margin-bottom: 10px; margin-top: 4px;">
+        <a href="{% url 'likeorder' %}" class="btn btn-outline-danger btn-block btn-sm">Like Order</a>
+    </div>
+    <div style="width: 125px; margin-bottom: 10px; margin-top: 4px;">
+        <a href="{% url 'followorder' %}" class="btn btn-outline-info btn-block btn-sm">Follow Order</a>
+    </div>
+    <div style="width: 142px; margin-bottom: 10px; margin-top: 4px;">
+        <a href="{% url 'completeorder' %}" class="btn btn-outline-success btn-block btn-sm">Complete Order</a>
+    </div>
+</div>
+
+{% block content_js %}
+<script src="{% static 'js/buttons.js' %}"></script>
+{% endblock %}
