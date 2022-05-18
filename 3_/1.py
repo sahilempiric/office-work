@@ -40,7 +40,4 @@ for link in links:
         print(e)
         continue
 
-# print(data_frame)
-
-input("Enter:")
 driver.quit()

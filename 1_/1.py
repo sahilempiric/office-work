@@ -41,6 +41,7 @@ for i in range(page_index):
         print(link_)
 
 
+data_frame = pd.DataFrame(list(zip(leadsources,company_name_li,company_web_li,address_li,contact_li,Phone_number_li)),columns=['Lead Source','Company Name','Comapany Website','Address','Contact','Phone No.'],dtype=str,index=None)
 for link_ in links:
         driver.get(link_)
         random_sleep(3,2)
@@ -78,11 +79,9 @@ for link_ in links:
         address_li.append(address)
         contact_li.append(contact)
         Phone_number_li.append(Phone_number)    
+        df = pd.DataFrame({'Lead Source':['https://2022.worldofprivatelabel.com/react/exhibitor?combine=&p=1&s=20'],'Company Name':[company_name],
+                        'Comapany Website':[company_web],'Address':[address],'Contact':[contact],'Phone No.':[Phone_number]})
+        data_frame = pd.concat([data_frame,df],ignore_index=True,axis=0)
         leadsources.append('https://2022.worldofprivatelabel.com/react/exhibitor?combine=&p=1&s=20')
-
-
-data_frame = pd.DataFrame(list(zip(leadsources,company_name_li,company_web_li,address_li,contact_li,Phone_number_li)),columns=['Lead Source','Company Name','Comapany Website','Address','Contact','Phone No.'],dtype=str,index=None)
-data_frame.to_csv('/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/scrapping/1_/scrapped_data.csv')
-
-input("Enter:")
+        data_frame.to_csv('/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/scrapping/1_/scrapped_data.csv')
 driver.quit()

@@ -44,5 +44,4 @@ for link in links:
         print(e)
         continue
 
-input("Enter:")
 driver.quit()

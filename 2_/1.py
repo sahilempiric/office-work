@@ -30,6 +30,7 @@ company_web_li = []
 lead_li = []
 scraped_card = 0
 all_cards_len = len(driver.find_elements_by_class_name('company-card'))
+data_frame = pd.DataFrame(list(zip(lead_li,comapny_name_li,linkdin_li,from_li,company_web_li,details_li,)),columns=['Lead source','Company Name','Linkdin','Located','Comapany Website','Details'],dtype=str,index=None)
 card_count = 0
 while card_count < all_cards_len:
     try:
@@ -64,24 +65,17 @@ while card_count < all_cards_len:
         details = "-" if details == "" else details 
         company_web = "-" if company_web == "" else company_web 
         linkdin = "-" if linkdin == "" else linkdin 
-
-        comapny_name_li.append(comapny_name_)
-        from_li.append(from_)
-        details_li.append(details)
-        company_web_li.append(company_web)
-        lead_li.append('https://www.vitafoods.eu.com/en/exhibitor-list.html')
-
         try:driver.execute_script('document.querySelector("#company-iframe-div > a").click()')
         except Exception as e:None
         if card_count % 10 == 0:
             driver.execute_script('document.querySelector("#listBottomElement > a").click()')
             random_sleep(3)
             all_cards_len = len(driver.find_elements_by_class_name('company-card'))
-
+        df = pd.DataFrame({'Lead source':['https://www.vitafoods.eu.com/en/exhibitor-list.html'],'Company Name':[comapny_name_],'Linkdin':[linkdin],'Located':[from_],'Comapany Website':[company_web],'Details':[details]})
+        data_frame = pd.concat([data_frame,df],ignore_index=True,axis=0)
+        # leadsources.append('https://2022.worldofprivatelabel.com/react/exhibitor?combine=&p=1&s=20')
+        data_frame.to_csv('/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/scrapping/2_/scrapped_data.csv')
     except Exception as e:print(e)
     card_count += 1 
 
-data_frame = pd.DataFrame(list(zip(lead_li,comapny_name_li,linkdin,from_li,company_web_li,details_li,)),columns=['Lead source','Company Name','Linkdin','Located','Comapany Website','Details'],dtype=str,index=None)
-data_frame.to_csv('/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/scrapping/2_/scrapped_data.csv')
-input("Enter:") 
 driver.quit()

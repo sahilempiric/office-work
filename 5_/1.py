@@ -27,6 +27,7 @@ accept.click()
 random_sleep(5,3)
 driver.refresh()
 all_links = [ i.get_attribute('href') for i in  driver.find_elements(By.CLASS_NAME,'grid-item')]
+data_frame = pd.DataFrame(list(zip(leadsources,title,address,telephone,mail)),columns=['Lead Source','Title','Address','Telephone','Email'],dtype=str,index=None)
 for link in all_links:
     driver.get(link)
 
@@ -51,9 +52,9 @@ for link in all_links:
         telephone.append(telephone_)
         mail.append(email)
         leadsources.append('https://fmig-online.de/unsere-mitglieder/?L=cpxjywytlgjuwjn')
+        df = pd.DataFrame({'Lead Source':['https://fmig-online.de/unsere-mitglieder/?L=cpxjywytlgjuwjn'],'Title':[title_],'Address':[address_],'Telephone':[telephone_],'Email':[email]})
+        data_frame = pd.concat([data_frame,df],ignore_index=True,axis=0)
+        data_frame.to_csv('/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/scrapping/5_/scrapped_data.csv')
 
-data_frame = pd.DataFrame(list(zip(leadsources,title,address,telephone,mail)),columns=['Lead Source','Title','Address','Telephone','Email'],dtype=str,index=None)
-data_frame.to_csv('/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/scrapping/5_/scrapped_data.csv')
-
-input("Enter:")
+# input("Enter:")
 driver.quit()
