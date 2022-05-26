@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from selenium.webdriver.common.by import By
-
+from home.models import user_details
 from home.driver.driver import get_driver
 # Create your views here.
 
@@ -46,11 +46,21 @@ class application(View):
             driver.find_element(By.NAME,'app_platform').click()
             time.sleep(2)
             driver.find_element(By.ID,'app_save_btn').click()
+            time.sleep(5)
+
+
+
+            driver.refresh()
+            app_api_id = driver.find_element(By.XPATH,'//*[@id="app_edit_form"]/div[1]/div[1]/span').get_attribute('text')
+            app_api_hash = driver.find_element(By.XPATH,'//*[@id="app_edit_form"]/div[2]/div[1]/span').get_attribute('text')
+
             
             
         except Exception as e:print(e)
         data = {
-            'sucsess' : otp
+            'sucsess' : otp,
+            'app_api_id' : app_api_id,
+            'app_api_hash' : app_api_hash,
         }
 
 

@@ -407,7 +407,9 @@ class Telegram_bot:
         country_code_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[1]'
         number_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[2]'
         continue_btn_after_number_xpth = '//android.widget.FrameLayout[@content-desc="Done"]'
+        call_permission_dont_ask_again_xp = 'com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button'
         country_code = 0
+        self.countries_vpn = 'Hong kong'  # for temprarory
         if self.countries_vpn == 'Hong kong':country_code = 852
         elif self.countries_vpn == 'south africa':country_code = 27
         elif self.countries_vpn == 'indonesia':country_code = 62
@@ -429,21 +431,72 @@ class Telegram_bot:
             self.app_driver.activate_app('org.telegram.messenger.web')
         except Exception as e:LOGGER.error(e)
         
-        self.click_element('start messages', start_messaging_xpath ,By.XPATH,timeout=3)
+        self.click_element('start messages', start_messaging_xpath ,timeout=3)
         self.click_element('continue to allow receive calls btn', continue_contact_xpt, By.XPATH,timeout=3)
         self.click_element('call permission',call_permission_deny_xp,By.ID,timeout=3)
-        
-        for i in range(10):
-            self.app_driver.activate_app('org.telegram.messenger.web')
-            if self.find_element('confirm phone number page','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]',By.XPATH,timeout=3):
-                
-                self.number = str(get_number())[3:]
-                self.input_text(country_code,'country code',country_code_xpth,By.XPATH)
-                self.input_text(self.number,'mobile number',number_xpth,By.XPATH)
-                self.click_element('continue after enter number',continue_btn_after_number_xpth,By.XPATH)
-                
-            # else:
-                # self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+        self.click_element('dont ask again the permission on call', call_permission_dont_ask_again_xp,By.ID,timeout=3)
+        total_acc = 0
+        while total_acc <3:
+            while True:
+                self.app_driver.activate_app('org.telegram.messenger.web')
+                if self.find_element('confirm phone number page','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]',By.XPATH,timeout=3):
+                    
+                    self.number = str(get_number())[3:]
+                    print(self.number,'====================================================')
+                    self.input_text(country_code,'country code',country_code_xpth,By.XPATH)
+                    self.input_text(self.number,'mobile number',number_xpth,By.XPATH)
+                    self.click_element('continue after enter number',continue_btn_after_number_xpth)
+                    self.click_element('ask for call permission','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView')
+                    self.click_element('access call logs','com.android.permissioncontroller:id/permission_deny_button',By.ID)
+                    self.click_element('deny for permission of call','com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button')
+                    all_otp_input = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/*')
+                    self.click_element('get code via sms','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[3]')
+                    self.otp=0
+                    self.otp = get_sms(self.number)
+                    try:
+                        self.otp = int(self.otp)
+                    except Exception as e:None
+                    if type(self.otp) == int:
+                        for otp_input in range(len(all_otp_input)):
+                            all_otp_input[otp_input].send_keys(self.otp[otp_input])
+
+
+                        self.click_element('permission for contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=4)
+                        self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID)
+                        self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH)
+                        break
+
+                    else:
+                        ban_number(self.number)
+                        self.click_element('back btn','//android.widget.ImageView[@content-desc="Go back"]')
+                        self.click_element('stop to process on this number')
+                        continue
+
+
+                    
+                # else:
+                    # self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+
+
+            triple_row_xpth = '//android.widget.ImageView[@content-desc="Open navigation menu"]'
+            add_account_row_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]'
+
+            all_ele_menuxpath= '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/*'
+
+            self.click_element('Menu btn',triple_row_xpth)
+            self.click_element('accounts viwer',add_account_row_xpth)
+
+            try:
+                all_menu_ele = self.app_driver.find_elements(all_ele_menuxpath)
+                for ele in all_menu_ele:
+                    if ele.get_attribute('text') == 'Add Account':
+                        ele.click()
+                        total_acc +=1
+                        
+                        break
+            except Exception as e:LOGGER.error(e)
+
+
 
         # self.app_driver.start_activity('de.mobileconcepts.cyberghost','de.mobileconcepts.cyberghost.view.app.AppActivity')
         time.sleep(10)
