@@ -19,7 +19,7 @@ from appium.webdriver.appium_service import AppiumService
 from appium.webdriver.common.touch_action import TouchAction
 from appium import webdriver
 import os,random,time
-import difflib
+import difflib, requests
 from appium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -416,7 +416,7 @@ class Telegram_bot:
         elif self.countries_vpn == 'philippines':country_code = 63
         elif self.countries_vpn == 'argentina':country_code = 54
 
-        number = 0
+        self.number = 0
         from home.management.commands.functions_file.function_msg import get_sms,get_number,ban_number
 
 
@@ -427,8 +427,8 @@ class Telegram_bot:
         # except Exception as e:print(e)
         try:
             self.app_driver.activate_app('org.telegram.messenger.web')
-        except Exception as e:print(e)
-
+        except Exception as e:LOGGER.error(e)
+        
         self.click_element('start messages', start_messaging_xpath ,By.XPATH,timeout=3)
         self.click_element('continue to allow receive calls btn', continue_contact_xpt, By.XPATH,timeout=3)
         self.click_element('call permission',call_permission_deny_xp,By.ID,timeout=3)
@@ -437,9 +437,9 @@ class Telegram_bot:
             self.app_driver.activate_app('org.telegram.messenger.web')
             if self.find_element('confirm phone number page','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]',By.XPATH,timeout=3):
                 
-                number = str(get_number())[3:]
+                self.number = str(get_number())[3:]
                 self.input_text(country_code,'country code',country_code_xpth,By.XPATH)
-                self.input_text(number,'mobile number',number_xpth,By.XPATH)
+                self.input_text(self.number,'mobile number',number_xpth,By.XPATH)
                 self.click_element('continue after enter number',continue_btn_after_number_xpth,By.XPATH)
                 
             # else:
@@ -447,3 +447,45 @@ class Telegram_bot:
 
         # self.app_driver.start_activity('de.mobileconcepts.cyberghost','de.mobileconcepts.cyberghost.view.app.AppActivity')
         time.sleep(10)
+
+
+    def Test(self):
+
+        
+        
+        login = requests.get(f'http://127.0.0.1:8000/login/{self.number}')
+        
+        
+        
+        try:
+            self.app_driver.activate_app('org.telegram.messenger.web')
+            time.sleep(2)
+        except Exception as e:print(e)
+
+
+
+
+
+
+
+        self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[0].click()
+        
+        time.sleep(2)
+        all_message = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/*')[-1]
+        otp_texts=''
+        for message in all_message:
+            msg_text = str(message.get_attribute('text'))
+            print(msg_text)
+            if 'Web login code' in msg_text:
+                otp_texts = msg_text
+                break
+        if otp_texts:
+            otp_texts = otp_texts.split('\n')
+            otp_texts.remove(otp_texts[0])
+            otp = otp_texts[0]
+
+
+        login_confirm = requests.get(f'http://127.0.0.1:8000/application/{otp}')
+
+
+        return otp

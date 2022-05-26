@@ -34,6 +34,10 @@ class Command(BaseCommand):
 
         tg.create_account()
 
+        
+
+        # tg.Test()
+
 
         
 

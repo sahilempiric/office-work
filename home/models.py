@@ -52,10 +52,12 @@ def create_better_avd(sender, instance, **kwargs):
 
 def delete_avd(sender, instance, **kwargs):
     try:
-        cmd = f'avdmanager delete avd --name {instance.name}'
+        LOGGER.info(f'Deleting the avd named {instance.avdname}')
+        cmd = f'avdmanager delete avd --name {instance.avdname}'
         p = subprocess.Popen([cmd], stdin=subprocess.PIPE, shell=True, stdout=subprocess.DEVNULL)
     except Exception as e:
         pass
+
 
 post_save.connect(create_better_avd, sender=User_avds)
 pre_delete.connect(delete_avd, sender=User_avds)

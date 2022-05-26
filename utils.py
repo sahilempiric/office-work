@@ -289,7 +289,7 @@ def run_cmd(cmd, verbose=True):
 
         r = subprocess.run(cmd, stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, shell=True, text=True)
-
+        
         if verbose:
             if r.returncode == 0:
                 LOGGER.debug(f'Successful to run the command: {cmd}')
