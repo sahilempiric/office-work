@@ -91,7 +91,8 @@ def script_chat(i,number,id,hash,msg,group):
             client.send_message(entity,msg)
             f_name = client.get_me().first_name
             print(f"{number} : {f_name} --- sent a message {msg}")
-            time.sleep(random.randint(60,120))
+            # time.sleep(random.randint(2,3))
+            time.sleep(random.randint(60,70))
             client.disconnect()
             complete = True
             return complete,temp_banned
@@ -152,11 +153,12 @@ def get_sms(phone_number, pid='10',country = 'hk'):
     }
     payload = urlencode(payload)
     full_url = url + payload
-    for x in range(10):
+    for x in range(15):
         response = requests.post(url=full_url).text
-        if 'insta' in (response).lower():
-            response = response.split(' ')
-            otp = response[1]+response[2]
+        print(response,'=================================')
+        if 'telegram' in str(response).lower():
+            response = str(response).split('Telegram code:')[-1]
+            otp = response.split(' ')[1].replace("You",'')
             return otp
         time.sleep(4)
 

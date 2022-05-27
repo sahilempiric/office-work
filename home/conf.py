@@ -25,11 +25,10 @@ TASKS_DIR = PRJ_PATH / TASKS_DIR_NAME
 TASKS_DIR.mkdir(parents=True, exist_ok=True) 
 PACKAGES_DIR = PRJ_PATH / PACKAGES_DIR_NAME
 CYBERGHOSTVPN_APK = PACKAGES_DIR / 'cyberghost.apk'
-AVD_DEVICES = ["Nexus 10", "Nexus 4", "Nexus 5", "Nexus 5X", "Nexus 6",
-               "Nexus 6P", "Nexus 7 2013", "Nexus 7", "Nexus 9",
+AVD_DEVICES = [
                "pixel", "pixel_2", "pixel_2_xl", "pixel_3", "pixel_3_xl",
                "pixel_3a", "pixel_3a_xl", "pixel_4", "pixel_4_xl", "pixel_4a",
-               "pixel_5", "pixel_xl", "pixel_c",
+               "pixel_5"
                ]
 AVD_PACKAGES = ["system-images;android-28;default;x86",
                 "system-images;android-28;default;x86_64",

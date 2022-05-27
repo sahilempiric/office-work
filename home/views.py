@@ -1,4 +1,5 @@
-import time
+import random
+import time, string
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -41,11 +42,15 @@ class application(View):
             time.sleep(5)
             driver.refresh()
             time.sleep(3)
-            driver.find_element(By.ID,'app_title').send_keys('applldiadsyfvtu')
-            driver.find_element(By.ID,'app_shortname').send_keys('sjhdu')
-            driver.find_element(By.NAME,'app_platform').click()
-            time.sleep(2)
-            driver.find_element(By.ID,'app_save_btn').click()
+
+            length = random.randint(5,12)
+
+            while True:
+                driver.find_element(By.ID,'app_title').send_keys(''.join(random.choices(string.ascii_uppercase,k=length)))
+                driver.find_element(By.ID,'app_shortname').send_keys(''.join(random.choices(string.ascii_uppercase,k=length/2)))
+                driver.find_element(By.NAME,'app_platform').click()
+                time.sleep(2)
+                driver.find_element(By.ID,'app_save_btn').click()
             time.sleep(5)
 
 

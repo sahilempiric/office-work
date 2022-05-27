@@ -140,7 +140,7 @@ def stop_avd(process=None, name='', port='', verbose=True):
     kill_cmd = f"kill -s TERM {pid}"
     run_cmd(kill_cmd, verbose=verbose)
     kill_process_after_waiting(pid, success_code=1, verbose=verbose)
-    time.sleep(random.randint(30, 40))
+    time.sleep(random.randint(5, 10))
 
 
 def get_avd_command(name='', port='', verbose=False):
