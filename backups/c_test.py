@@ -210,7 +210,10 @@ class CyberGhost:
         add_account_row_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]'
                 
         if self.find_element('Menu btn',triple_row_xpth):
-            # self.click_element('Menu btn',triple_row_xpth)
+            self.click_element('Menu btn',triple_row_xpth)
+            self.number = str(self.find_element('Phone number','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.widget.TextView[2]',By.XPATH).get_attribute('text')).strip().replace(' ','')
+            print(self.number,'===========')
+            self.app_driver.back()
             # self.click_element('accounts viwer',add_account_row_xpth)
 
             # try:
@@ -229,15 +232,15 @@ class CyberGhost:
             #     self.app_driver.activate_app('org.telegram.messenger.web')
             #     time.sleep(2)
             # except Exception as e:print(e)
-            try:
-                self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[0].click()
-            except Exception as e:print(e)
+            # try:
+            self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[0].click()
+            # except Exception as e:print(e)
             all_message = []
             otp_texts=''
             time.sleep(3)
-            try:
-                all_message = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/*')
-            except Exception as e:print(e)
+        # try:
+            all_message = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/*')
+            # except Exception as e:print(e)
             all_message.reverse()   
             for message in all_message:
                 msg_text = str(message.get_attribute('text'))
@@ -263,7 +266,29 @@ class CyberGhost:
                     #         )
                     total_acc +=1
                     outer_loop_break1 = True
-
+        time.sleep(3)
+        all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
+        print(all_menu_ele,'********************************')
+        for ele in all_menu_ele:
+            # print(ele.get_attribute('innerText'))
+            # try:print(ele.get_attribute('class'))
+            # except Exception as e:print(e)
+            try:print(ele.get_attribute('class'))
+            except Exception as e:print(e)
+            # try:print(ele.get_attribute('{text,name}'))
+            # except Exception as e:print(e)
+            try:print(ele.get_attribute('text'))
+            except Exception as e:print(e)
+            try:print(ele.get_attribute('name'))
+            except Exception as e:print(e)
+            # try:print(ele.get_attribute('innerText'))
+            # except Exception as e:print(e)
+            # if ele.get_attribute('text') == 'Add Account':
+            #     ele.click()
+            #     # total_acc +=1
+            #     outer_loop_break2 = True
+            #     # print()
+            #     break
 
         # else:continue
         try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
