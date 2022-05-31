@@ -15,18 +15,22 @@ class Command(BaseCommand):
         # parser.add_argument('emulator', type=str, help='emulator of New user')
 
     def handle(self, *args, **kwargs):
-        # User_avds.objects.all().delete()
-        # aa = User_avds.objects.create(
-        #     avdname='bavisi11',
-        #     port=5554,
-
-        # )
-        aa = User_avds.objects.all()[0]
+        emulator = 'bavisi13'
+        if True:
+            if User_avds.objects.filter(avdname = emulator).exists():
+                User_avds.objects.filter(avdname = emulator).delete()
+            # User_avds.objects.all().delete()
+            aa = User_avds.objects.create(
+                avdname=emulator,
+                port=5554,
+            )
+        else:
+            aa = User_avds.objects.all()[0]
         print(aa)
         # aa = User_avds.objects.all().first()
         tg = Telegram_bot(aa.avdname)
         tg.start_driver()
-        # tg.check_apk_installation()
+        tg.check_apk_installation()
         # tg.restart_avd()
         # if True:
         #     time.sleep(10)
@@ -34,11 +38,11 @@ class Command(BaseCommand):
         #         print(tg.connect_to_vpn(country=COUNTRY))
         # input('Enter :')
 
-        # tg.create_account()
+        tg.create_account()
 
         
 
-        tg.Test()
+        # tg.Test()
 
 
         

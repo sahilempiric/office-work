@@ -7,19 +7,29 @@
 # a = a[0].split(' ')[0]
 # print(a)
 
+a = [1,2,34,4,5,6]
+a.reverse()
+print(a.count(34))
 
 
-response = '''1|Telegram code: 68399You can also tap on this link to log in:https://t.me/login/68399[HandLing]'''
-if 'telegram' in str(response).lower():
-    response = str(response).split('Telegram code:')[-1]
-#     response.replace('Telegram code: ','')
-    response = response.split(' ')[1].replace("You",'')
-    # response = response.replace("You",'')
-print(response)
-import random,string
-b = '243235'
-a = ''.join(random.choices(string.ascii_lowercase,k=5) )
-print(a,'===')
+a={
+    'b' : 'weqr'
+}
+# del a['b']
+print(a.items())
+
+
+# response = '''1|Telegram code: 68399You can also tap on this link to log in:https://t.me/login/68399[HandLing]'''
+# if 'telegram' in str(response).lower():
+#     response = str(response).split('Telegram code:')[-1]
+# #     response.replace('Telegram code: ','')
+#     response = response.split(' ')[1].replace("You",'')
+#     # response = response.replace("You",'')
+# print(response)
+# import random,string
+# b = '243235'
+# a = ''.join(random.choices(string.ascii_lowercase,k=5) )
+# print(a,'===')
 
 # import time
 # def myfunc1():

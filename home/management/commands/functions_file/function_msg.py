@@ -86,13 +86,13 @@ def script_chat(i,number,id,hash,msg,group):
         try:
             client = TelegramClient(f'./sessions/{number}',id,hash)
             client.connect()
-            client(JoinChannelRequest(group))
-            entity = client.get_entity(group)
-            client.send_message(entity,msg)
+            # client(JoinChannelRequest(group))
+            # entity = client.get_entity(group)
+            # client.send_message(entity,msg)
             f_name = client.get_me().first_name
             print(f"{number} : {f_name} --- sent a message {msg}")
-            # time.sleep(random.randint(2,3))
-            time.sleep(random.randint(60,70))
+            time.sleep(random.randint(0,1))
+            # time.sleep(random.randint(60,70))
             client.disconnect()
             complete = True
             return complete,temp_banned
@@ -118,24 +118,24 @@ from urllib.parse import urlencode
 
 
 def get_number(pid='10',country = 'hk'):
+    url = "http://api.getsmscode.com/vndo.php?"
+
+    payload = {
+        "action": "getmobile",
+        "username": "pay@noborders.net",
+        "token": "87269a810f4a59d407d0e0efe58185e6",
+        "pid": pid,
+        "cocode":country
+    }
     while True:
-        url = "http://api.getsmscode.com/vndo.php?"
-
-        payload = {
-            "action": "getmobile",
-            "username": "pay@noborders.net",
-            "token": "87269a810f4a59d407d0e0efe58185e6",
-            "pid": pid,
-            "cocode":country
-        }
-
+        
         payload = urlencode(payload)
         full_url = url + payload
         response = requests.post(url=full_url)
         response = response.content.decode("utf-8")
         # print(response)
         # time.sleep(1000)
-        if str(response) == 'Message|Capture Max mobile numbers,you max is 5':
+        if str(response) == ('Message|Capture Max mobile numbers,you max is 5' or 'Message|unavailable'):
             continue
         else:break
     return response

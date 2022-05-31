@@ -15,6 +15,11 @@ class user_details(models.Model):
     def __str__(self) :
         return str(self.number)
 
+class inactive_user(models.Model):
+    user = models.ForeignKey(user_details,on_delete=models.CASCADE)
+    def __str__(self) :
+        return str(self.user)
+
 class User_avds(models.Model):
     avdname = models.CharField(max_length=255)
     port = models.IntegerField(default=0)
