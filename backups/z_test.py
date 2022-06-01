@@ -5,18 +5,27 @@
 # a = aa.split('This is your login code: ')
 # a.remove(a[0])
 # a = a[0].split(' ')[0]
+
 # print(a)
 
-a = [1,2,34,4,5,6]
-a.reverse()
-print(a.count(34))
+
+import requests,json
+
+a = requests.get('http://127.0.0.1:8000/test')
+# a = )
+print(a.json())
 
 
-a={
-    'b' : 'weqr'
-}
-# del a['b']
-print(a.items())
+# a = [1,2,34,4,5,6]
+# a.reverse()
+# print(a.count(34))
+
+
+# a={
+#     'b' : 'weqr'
+# }
+# # del a['b']
+# print(a.items())
 
 
 # response = '''1|Telegram code: 68399You can also tap on this link to log in:https://t.me/login/68399[HandLing]'''

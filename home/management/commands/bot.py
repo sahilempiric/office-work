@@ -25,7 +25,7 @@ class Command(BaseCommand):
                 port=5554,
             )
         else:
-            aa = User_avds.objects.all()[0]
+            aa = User_avds.objects.filter(avdname = emulator).first()
         print(aa)
         # aa = User_avds.objects.all().first()
         tg = Telegram_bot(aa.avdname)

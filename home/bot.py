@@ -199,6 +199,8 @@ class Telegram_bot:
                 error=None,
             )
         LOGGER.debug('Check if telegram is installed')
+
+
     def start_driver(self):
         try:
             opts = {
@@ -454,9 +456,15 @@ class Telegram_bot:
         self.number = 0
         from home.management.commands.functions_file.function_msg import get_sms,get_number,ban_number
 
-
+        # dicts = {
+        #     'sucsess' : [],
+        #     'remain' : [],
+        #     'current' : []
+        # }
         try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
         except Exception as e:None
+        self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
+
         # try:
         #     self.app_driver.activate_app('org.telegram.messenger.web')
         # except Exception as e:LOGGER.error(e)
@@ -478,7 +486,7 @@ class Telegram_bot:
                 
                 try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                 except Exception as e:None
-
+                self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
                 self.click_element('start messages', start_messaging_xpath ,timeout=1)
                 if self.starting_permission < 5:
                     # self.starting_permission += 1
@@ -492,6 +500,11 @@ class Telegram_bot:
                         mobile_number_page = True
                         break
 
+                # create_account = True if len(dicts['current']) == 0 else False
+                # if len(dicts['current']) == 0:
+                    # pass
+                
+                # if create_account :
                 if mobile_number_page or  self.find_element('confirm phone number page','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]',By.XPATH,timeout=3):
                     
                     self.number = str(get_number())
@@ -554,7 +567,8 @@ class Telegram_bot:
                             self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID)
                             self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH)
                             # break
-
+                        
+                        # dicts['current'].append(self.number)
                     # else:
                     #     ban_number(self.number)
                     #     self.click_element('back btn','//android.widget.ImageView[@content-desc="Go back"]',By.XPATH)
@@ -584,8 +598,8 @@ class Telegram_bot:
                     self.input_text(self.lname,'Last name','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout[1]/android.widget.EditText[2]',By.XPATH)
                     self.click_element('Continue btn','//android.widget.FrameLayout[@content-desc="Done"]/android.widget.ImageView',By.XPATH)
                     if self.starting_permission < 4:
-                        self.click_element('permission for contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1)
-                        self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1)
+                        self.click_element('permission for contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2)
+                        self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2)
                     self.outer_loop = False
                     random_sleep(1,4)
                     # all_ele_li = self.app_driver.find_elements_by_xpath('//*')
@@ -615,113 +629,287 @@ class Telegram_bot:
                 if self.starting_permission < 4:
                     self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=2)
                     self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=2)
-                    if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1):None
-                    else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
-                    if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1): None
-                    else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
+                    if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2):None
+                    else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=2)
+                    if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2): None
+                    else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=2)
+
+
 
                 triple_row_xpth = '//android.widget.ImageView[@content-desc="Open navigation menu"]'
                 add_account_row_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]'
                 try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                 except Exception as e:None
+                self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
                 all_ele_menuxpath= '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/*'
-                if self.find_element('Menu btn',triple_row_xpth):
-                    # self.click_element('Menu btn',triple_row_xpth)
-                    # self.click_element('accounts viwer',add_account_row_xpth)
-
-                    # try:
-                    #     all_menu_ele = self.app_driver.find_elements(all_ele_menuxpath)
-                    #     for ele in all_menu_ele:
-                    #         if ele.get_attribute('text') == 'Add Account':
-                    #             ele.click()
-                    #             total_acc +=1
-                                
-                    #             break
-                    # except Exception as e:LOGGER.error(e)
-
-                    login = requests.get(f'http://127.0.0.1:8000/login/{self.number}')
-
-                    # try:
-                    #     self.app_driver.activate_app('org.telegram.messenger.web')
-                    #     time.sleep(2)
-                    # except Exception as e:print(e)
-                    try:
-                        self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[0].click()
-                    except Exception as e:print(e)
-                    all_message = []
-                    otp_texts=''
-                    random_sleep(2,3)
-                    try:
-                        all_message = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/*')
-                    except Exception as e:print(e)
-                    all_message.reverse()   
-                    for message in all_message:
-                        msg_text = str(message.get_attribute('text'))
-                        print(msg_text)
-                        if 'Web login code' in msg_text:
-                            otp_texts = msg_text
-                            break
-                    if otp_texts:
-                        otp_texts = otp_texts.split('\n')
-                        otp_texts.remove(otp_texts[0])
-                        otp = otp_texts[0]
-
-                        otp_request = requests.get(f'http://127.0.0.1:8000/application/{otp}')
-                        print(otp_request,'----------------------------')
-                        if otp_request['sucsess'] == True:
-                            user_details.objects.create(
-                                        emulator =  self.emulator_name,
-                                        number = self.number,
-                                        api_id = otp_request['app_api_id'],
-                                        api_hash = otp_request['app_api_hash'],
-                                        username = self.username
-                                    )
-                            total_acc +=1
-                            outer_loop_break1 = True
-
-
-                else:continue
-                try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
-                except Exception as e:None
-                if self.find_element('Menu btn',triple_row_xpth):
-                    self.click_element('Menu btn',triple_row_xpth)
-                    # self.click_element('accounts viwer',add_account_row_xpth)
-                    self.username = str(self.fname)+f'_a{random.randint(10000,99999)}'
-                    # self.click_element('Menu btn',triple_row_xpth)
-                    # self.click_element('accounts viwer',add_account_row_xpth)
-                    # time.sleep(2)
-
-                    if True: # for update username
-                        self.click_element('Profile btn','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.view.View',By.XPATH)
-                        self.click_element('username btn','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[4]',By.XPATH)
-                        # self.input_text('eagfeauff213','username field','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText',By.XPATH)
-                        self.input_text(self.username,'username field','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText',By.XPATH)
-                        self.click_element('Done btn','//android.widget.ImageButton[@content-desc="Done"]/android.widget.ImageView',By.XPATH)
-                        self.click_element('Back btn','//android.widget.ImageView[@content-desc="Go back"]',By.XPATH)
-                        try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
-                        except Exception as e:None
-                        # self.click_element('Menu btn',triple_row_xpth)
-                        # self.click_element('accounts viwer',add_account_row_xpth)
-
+                    
+                
+                for i in range(5):
 
                     try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                     except Exception as e:None
-                    self.click_element('Menu btn',triple_row_xpth)
-                    self.click_element('accounts viwer',add_account_row_xpth)
-                    try:
-                        random_sleep(2,4)
-                        all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
-                        for ele in all_menu_ele:
-                            print(ele.get_attribute('text'))
-                            if ele.get_attribute('text') == 'Add Account':
-                                ele.click()
-                                # total_acc +=1
-                                outer_loop_break2 = True
-                                print('\n\nCode completed\n\n')
+                    self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
+                    self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=2)
+                    self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=2)
+                    if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2):None
+                    else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=2)
+                    if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2): None
+                    else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=2)
+                    triple_row_xpth = '//android.widget.ImageView[@content-desc="Open navigation menu"]'
+                    add_account_row_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]'
+                    # outer_loop_break1 = False
+                    # outer_loop_break2 = False
+                    if self.find_element('Menu btn',triple_row_xpth):
+                        self.click_element('Menu btn',triple_row_xpth)
+                        self.number = str(self.find_element('Phone number','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.widget.TextView[2]',By.XPATH).get_attribute('text')).strip().replace(' ','')
+                        print(self.number,'===========')
+                        self.app_driver.back()
+                        # self.click_element('accounts viwer',add_account_row_xpth)
+
+                        # try:
+                        #     all_menu_ele = self.app_driver.find_elements(all_ele_menuxpath)
+                        #     for ele in all_menu_ele:
+                        #         if ele.get_attribute('text') == 'Add Account':
+                        #             ele.click()
+                        #             total_acc +=1
+                                    
+                        #             break
+                        # except Exception as e:LOGGER.error(e)
+
+                        login = requests.get(f'http://127.0.0.1:8000/login/{self.number}')
+
+                        # try:
+                        #     self.app_driver.activate_app('org.telegram.messenger.web')
+                        #     time.sleep(2)
+                        # except Exception as e:print(e)
+                        # try:
+                        # secound_element = False
+                        # try:
+                        #     all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
+                        #     for ele in all_menu_ele:
+                        #         print(ele.get_attribute('text'))
+                        #         if ele.get_attribute('text') == 'Archived Chats' :
+                        #             secound_element = True
+                        #             break
+                        #     telegram_chat = 1 if secound_element == True else 0
+                        # except Exception as e:
+                        #     print(e)
+                            # telegram_chat = 1
+
+                        random_sleep(5,9)
+                        telegram_otp1 = self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]')
+                        telegram_otp1.click()
+                        try:
+                            all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
+                            for ele in all_menu_ele:
+                                print(ele.get_attribute('text'))
+                                if 'Archived' in str(ele.get_attribute('text')).lower() :
+                                    self.click_element('back btn','//android.widget.ImageView[@content-desc="Go back"]',By.XPATH)
+                                    self.click_element('telegram chat 2','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]',By.XPATH)
+                                    # telegram_otp1 = self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]')
+
+                                    # secound_element = True
+                                    break
+                        except Exception as e:print(e)
+
+
+                        # self.app_driver.find_elements(By.XPATH,f'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[telegram_chat].click()
+                        # except Exception as e:print(e)
+                        all_message = []
+                        otp_texts=''
+                        time.sleep(3)
+                    # try:
+
+                        all_message = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/*')
+                        # except Exception as e:print(e)
+                        all_message.reverse()   
+                        for message in all_message:
+                            msg_text = str(message.get_attribute('text'))
+                            print(msg_text)
+                            if 'Web login code' in msg_text:
+                                otp_texts = msg_text
                                 break
-                        
-                    except Exception as e:print(e)
-                if outer_loop_break1 and outer_loop_break2 : break
+                        if otp_texts:
+                            self.app_driver.back()
+                            otp_texts = otp_texts.split('\n')
+                            otp_texts.remove(otp_texts[0])
+                            otp = otp_texts[0]
+
+                            otp_request = requests.get(f'http://127.0.0.1:8000/application/{otp}').json()
+                            print(otp_request,'----------------------------')
+                            # import json
+
+                            # otp_request = json.dump(otp_request.text)
+                            if otp_request['sucsess'] == True:
+                                print('\n\ndata created\n\n')
+                                user_details.objects.create(
+                                            emulator =  self.emulator_name,
+                                            number = self.number,
+                                            api_id = otp_request['app_api_id'],
+                                            api_hash = otp_request['app_api_hash'],
+                                            username = self.username
+                                        )
+                                # total_acc +=1
+                                outer_loop_break1 = True
+                    time.sleep(3)
+                    secound_element = False
+                    all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
+                    for ele in all_menu_ele:
+                        if ele.get_attribute('text') == 'Archived Chats' :
+                            secound_element = True
+                            break
+
+                    # else:continue
+                    try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+                    except Exception as e:None
+                    self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH)
+                    name,self.fname,self.lname = self.fake_name()
+                    # 
+                    if self.find_element('Menu btn',triple_row_xpth):
+                        self.click_element('Menu btn',triple_row_xpth)
+                        self.username = str(self.fname)+f'_a{random.randint(10000,99999)}'
+                        # self.click_element('accounts viwer',add_account_row_xpth)
+                        # self.click_element('Menu btn',triple_row_xpth)
+                        # self.click_element('accounts viwer',add_account_row_xpth)
+                        # time.sleep(2)
+
+                        if True: # for update username
+                            self.click_element('Profile btn','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.view.View',By.XPATH)
+                            self.click_element('username btn','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[4]',By.XPATH)
+                            # self.input_text('eagfeauff213','username field','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText',By.XPATH)
+                            self.input_text(self.username,'username field','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText',By.XPATH)
+                            self.click_element('Done btn','//android.widget.ImageButton[@content-desc="Done"]/android.widget.ImageView',By.XPATH)
+                            self.click_element('Back btn','//android.widget.ImageView[@content-desc="Go back"]',By.XPATH)
+                            try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+                            except Exception as e:None
+                            # self.click_element('Menu btn',triple_row_xpth)
+                            # self.click_element('accounts viwer',add_account_row_xpth)
+
+
+                        try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+                        except Exception as e:None
+                        self.click_element('Menu btn',triple_row_xpth)
+                        self.click_element('accounts viwer',add_account_row_xpth)
+                        try:
+                            time.sleep(3)
+                            all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
+                            for ele in all_menu_ele:
+                                # print(ele.get_attribute('text'))
+                                if ele.get_attribute('text') == 'Add Account':
+                                    ele.click()
+                                    # total_acc +=1
+                                    outer_loop_break2 = True
+                                    # print()
+                                    break
+                            
+                        except Exception as e:print(e)
+                    if outer_loop_break1 and outer_loop_break2 :break
+
+
+
+
+
+                    
+                    # if self.find_element('Menu btn',triple_row_xpth):
+                    #     # self.click_element('Menu btn',triple_row_xpth)
+                    #     # self.click_element('accounts viwer',add_account_row_xpth)
+
+                    #     # try:
+                    #     #     all_menu_ele = self.app_driver.find_elements(all_ele_menuxpath)
+                    #     #     for ele in all_menu_ele:
+                    #     #         if ele.get_attribute('text') == 'Add Account':
+                    #     #             ele.click()
+                    #     #             total_acc +=1
+                                    
+                    #     #             break
+                    #     # except Exception as e:LOGGER.error(e)
+
+                    #     login = requests.get(f'http://127.0.0.1:8000/login/{self.number}')
+
+                    #     # try:
+                    #     #     self.app_driver.activate_app('org.telegram.messenger.web')
+                    #     #     time.sleep(2)
+                    #     # except Exception as e:print(e)
+                    #     try:
+                    #         self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[0].click()
+                    #     except Exception as e:print(e)
+                    #     all_message = []
+                    #     otp_texts=''
+                    #     random_sleep(2,3)
+                    #     try:
+                    #         all_message = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/*')
+                    #     except Exception as e:print(e)
+                    #     all_message.reverse()   
+                    #     for message in all_message:
+                    #         msg_text = str(message.get_attribute('text'))
+                    #         print(msg_text)
+                    #         if 'Web login code' in msg_text:
+                    #             otp_texts = msg_text
+                    #             break
+                    #     if otp_texts:
+                    #         otp_texts = otp_texts.split('\n')
+                    #         otp_texts.remove(otp_texts[0])
+                    #         otp = otp_texts[0]
+
+                    #         otp_request = requests.get(f'http://127.0.0.1:8000/application/{otp}')
+                    #         print(otp_request,'----------------------------')
+                    #         if otp_request['sucsess'] == True:
+                    #             user_details.objects.create(
+                    #                         emulator =  self.emulator_name,
+                    #                         number = self.number,
+                    #                         api_id = otp_request['app_api_id'],
+                    #                         api_hash = otp_request['app_api_hash'],
+                    #                         username = self.username
+                    #                     )
+                    #             total_acc +=1
+                    #             # outer_loop_break1 = True
+
+
+                    # else:continue
+                    # try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+                    # except Exception as e:None
+                    # self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
+                    # if self.find_element('Menu btn',triple_row_xpth):
+                    #     self.click_element('Menu btn',triple_row_xpth)
+                    #     # self.click_element('accounts viwer',add_account_row_xpth)
+                    #     self.username = str(self.fname)+f'_a{random.randint(10000,99999)}'
+                    #     # self.click_element('Menu btn',triple_row_xpth)
+                    #     # self.click_element('accounts viwer',add_account_row_xpth)
+                    #     # time.sleep(2)
+
+                    #     if True: # for update username
+                    #         self.click_element('Profile btn','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.view.View',By.XPATH)
+                    #         self.click_element('username btn','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[4]',By.XPATH)
+                    #         # self.input_text('eagfeauff213','username field','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText',By.XPATH)
+                    #         self.input_text(self.username,'username field','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText',By.XPATH)
+                    #         self.click_element('Done btn','//android.widget.ImageButton[@content-desc="Done"]/android.widget.ImageView',By.XPATH)
+                    #         self.click_element('Back btn','//android.widget.ImageView[@content-desc="Go back"]',By.XPATH)
+                    #         try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+                    #         except Exception as e:None
+                    #         self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
+                    #         # self.click_element('Menu btn',triple_row_xpth)
+                    #         # self.click_element('accounts viwer',add_account_row_xpth)
+
+
+                    #     try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
+                    #     except Exception as e:None
+                    #     self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
+                    #     self.click_element('Menu btn',triple_row_xpth)
+                    #     self.click_element('accounts viwer',add_account_row_xpth)
+                    #     try:
+                    #         random_sleep(2,4)
+                    #         all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
+                    #         for ele in all_menu_ele:
+                    #             print(ele.get_attribute('text'))
+                    #             if ele.get_attribute('text') == 'Add Account':
+                    #                 ele.click()
+                    #                 # total_acc +=1
+                    #                 outer_loop_break2 = True
+                    #                 print('\n\nCode completed\n\n')
+                    #                 break
+                            
+                    #     except Exception as e:print(e)
+                    # if outer_loop_break1 and outer_loop_break2 : break
 
         # self.app_driver.start_activity('de.mobileconcepts.cyberghost','de.mobileconcepts.cyberghost.view.app.AppActivity')
         time.sleep(10)

@@ -91,6 +91,7 @@ class application(View):
                 success = True
             else:success = False
             
+
             
         except Exception as e:print(e)
         data = {
@@ -100,5 +101,14 @@ class application(View):
         }
 
 
-        
+        driver.quit()
         return JsonResponse(data=data)
+
+
+
+class test(View):
+    def get(self,request):
+
+        return JsonResponse(data={
+            'test' : True
+        })

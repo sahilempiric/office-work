@@ -3,6 +3,7 @@ from appium import webdriver
 import os.path,random
 # from ..main import LOGGER
 import time, requests
+from flask import jsonify
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,7 +17,7 @@ from faker import Faker
 fake = Faker()
 country_name = 'malaysia'
 
-def get_number(pid='8',country = 'hk'):
+def get_number(pid='10',country = 'hk'):
     url = "http://api.getsmscode.com/vndo.php?"
 
     payload = {
@@ -26,17 +27,20 @@ def get_number(pid='8',country = 'hk'):
         "pid": pid,
         "cocode":country
     }
-
-    payload = urlencode(payload)
-    full_url = url + payload
-    response = requests.post(url=full_url)
-    response = response.content.decode("utf-8")
-    # print(response)
-    # time.sleep(1000)
-
+    while True:
+        
+        payload = urlencode(payload)
+        full_url = url + payload
+        response = requests.post(url=full_url)
+        response = response.content.decode("utf-8")
+        # print(response)
+        # time.sleep(1000)
+        if str(response) == ('Message|Capture Max mobile numbers,you max is 5' or 'Message|unavailable'):
+            continue
+        else:break
     return response
 
-def get_sms(phone_number, pid='8',country = 'hk'):
+def get_sms(phone_number, pid='10',country = 'hk'):
     url = "http://api.getsmscode.com/vndo.php?"
     payload = {
         "action": "getsms",
@@ -49,17 +53,18 @@ def get_sms(phone_number, pid='8',country = 'hk'):
     }
     payload = urlencode(payload)
     full_url = url + payload
-    for x in range(10):
+    for x in range(15):
         response = requests.post(url=full_url).text
-        if 'insta' in (response).lower():
-            response = response.split(' ')
-            otp = response[1]+response[2]
+        print(response,'=================================')
+        if 'telegram' in str(response).lower():
+            response = str(response).split('Telegram code:')[-1]
+            otp = response.split(' ')[1].replace("You",'')
             return otp
         time.sleep(4)
 
     return False
 
-def ban_number(phone_number, pid='8',country = 'hk'):
+def ban_number(phone_number, pid='10',country = 'hk'):
     url = "http://api.getsmscode.com/vndo.php?"
     payload = {
         "action": "addblack",
@@ -190,6 +195,7 @@ class CyberGhost:
 
     def try_again_popup(self):
         try:
+            
             try_again_ele_id = 'com.instagram.android:id/default_dialog_title'
             try_again_ele_ele = self.find_element('Try again',try_again_ele_id,By.ID,timeout=3)
 
@@ -205,10 +211,21 @@ class CyberGhost:
                 return False
         except :return False
 
+    def fake_name(self):
+        from faker import Faker
+        fake = Faker()
+        name = fake.name()
+        name_li = str(name).split(' ')
+        fname = name_li[0]
+        lname = name_li[-1]
+        return name,fname, lname
+
     def next_move(self):
+        total_acc = 0
         triple_row_xpth = '//android.widget.ImageView[@content-desc="Open navigation menu"]'
         add_account_row_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]'
-                
+        outer_loop_break1 = False
+        outer_loop_break2 = False
         if self.find_element('Menu btn',triple_row_xpth):
             self.click_element('Menu btn',triple_row_xpth)
             self.number = str(self.find_element('Phone number','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.widget.TextView[2]',By.XPATH).get_attribute('text')).strip().replace(' ','')
@@ -233,12 +250,21 @@ class CyberGhost:
             #     time.sleep(2)
             # except Exception as e:print(e)
             # try:
-            self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[0].click()
+            secound_element = False
+            all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
+            for ele in all_menu_ele:
+                if ele.get_attribute('text') == 'Archived Chats' :
+                    secound_element = True
+                    break
+
+            telegram_chat = 1 if secound_element == True else 0
+            self.app_driver.find_elements(By.XPATH,f'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/*')[telegram_chat].click()
             # except Exception as e:print(e)
             all_message = []
             otp_texts=''
             time.sleep(3)
         # try:
+
             all_message = self.app_driver.find_elements(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/*')
             # except Exception as e:print(e)
             all_message.reverse()   
@@ -249,12 +275,16 @@ class CyberGhost:
                     otp_texts = msg_text
                     break
             if otp_texts:
+                self.app_driver.back()
                 otp_texts = otp_texts.split('\n')
                 otp_texts.remove(otp_texts[0])
                 otp = otp_texts[0]
 
-                otp_request = requests.get(f'http://127.0.0.1:8000/application/{otp}')
+                otp_request = requests.get(f'http://127.0.0.1:8000/application/{otp}').json()
                 print(otp_request,'----------------------------')
+                # import json
+
+                # otp_request = json.dump(otp_request.text)
                 if otp_request['sucsess'] == True:
                     print('\n\ndata created\n\n')
                     # user_details.objects.create(
@@ -267,32 +297,19 @@ class CyberGhost:
                     total_acc +=1
                     outer_loop_break1 = True
         time.sleep(3)
+        secound_element = False
         all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
-        print(all_menu_ele,'********************************')
         for ele in all_menu_ele:
-            # print(ele.get_attribute('innerText'))
-            # try:print(ele.get_attribute('class'))
-            # except Exception as e:print(e)
-            try:print(ele.get_attribute('class'))
-            except Exception as e:print(e)
-            # try:print(ele.get_attribute('{text,name}'))
-            # except Exception as e:print(e)
-            try:print(ele.get_attribute('text'))
-            except Exception as e:print(e)
-            try:print(ele.get_attribute('name'))
-            except Exception as e:print(e)
-            # try:print(ele.get_attribute('innerText'))
-            # except Exception as e:print(e)
-            # if ele.get_attribute('text') == 'Add Account':
-            #     ele.click()
-            #     # total_acc +=1
-            #     outer_loop_break2 = True
-            #     # print()
-            #     break
+            if ele.get_attribute('text') == 'Archived Chats' :
+                secound_element = True
+                break
 
         # else:continue
         try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
         except Exception as e:None
+        self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH)
+        name,self.fname,self.lname = self.fake_name()
+        # 
         if self.find_element('Menu btn',triple_row_xpth):
             self.click_element('Menu btn',triple_row_xpth)
             # self.click_element('accounts viwer',add_account_row_xpth)

@@ -23,7 +23,7 @@ class Command(BaseCommand):
         else :
             tclient = TelegramClient(f'./sessions/{number}',api_id,api_hash)
             if tclient.start(phone=number):
-                user_details.objects.create(number=number,api_id=api_id,api_hash=api_hash,username='Immanuel2475',emulator='pixel23')
+                user_details.objects.create(number=number,api_id=api_id,api_hash=api_hash,username='dstwwz3766',emulator='-')
                 print('User Exists in database ')
             else:
                 print('Please Enter Valid Credentials or OTP !')
