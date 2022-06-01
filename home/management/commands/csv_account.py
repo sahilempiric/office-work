@@ -13,8 +13,7 @@ class Command(BaseCommand):
 
         csv_li= [
             
-            '/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/Automation/telegram_avds/office-work/account_csv/Himanshu_Telegram_AC_CSV.csv',
-            '/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/Automation/telegram_avds/office-work/account_csv/Rohit_users_data.csv',
+            '/media/eu4/49fa581d-6d91-4c0f-886a-2d6d1a2b9857/project/Automation/telegram_avds/office-work/account_csv/Rohit_users_data.csv'
             ]
 
         for csv in csv_li:
@@ -43,9 +42,12 @@ class Command(BaseCommand):
                     #     tclient.sign_in(number, input('Enter the code: '))
 
                     # print(aa.)
-                    if tclient.start(phone=number):
-                        user_details.objects.create(number=number,api_id=apiid,api_hash=apihash,username=username,emulator=avdname)
+                    try:
+                        if tclient.start(phone=number):
+                            user_details.objects.create(number=number,api_id=apiid,api_hash=apihash,username=username,emulator=avdname)
 
-                        print('User Exists in database ')
-                    else:
-                        print('Please Enter Valid Credentials or OTP !')
+                            print('User Exists in database ')
+                        else:
+                            print('Please Enter Valid Credentials or OTP !')
+                    except Exception as e:
+                        print(e)
