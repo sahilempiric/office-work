@@ -7,28 +7,70 @@ import telethon,os
 from telethon import errors
 from telethon.tl.functions.channels import JoinChannelRequest
 
-def send_messages(view_group,groupname,Message,number,apiid,apihash):
+def add_group(view_group,groupname,Message,number,apiid,apihash):
     try:
         client = TelegramClient(f'./sessions/{number}',apiid,apihash)
+        user = user_details.objects.filter(number=number).first()
         client.connect()
         if client.is_user_authorized():
             me = client.get_me()
+            client(JoinChannelRequest(groupname))
+            time.sleep(0.3)
             entity = client.get_entity(view_group)
             if client.send_read_acknowledge(entity):
+                user.views += 1
                 print(f"{me.first_name} {number} have Marked as seen in {view_group}'s chat")
             else : 
                 print(f"{me.first_name} {number} have No new messages in {view_group}'s chat")
-            if client.send_message(groupname,Message):
-                print(f'+{number} {me.first_name} has sent a message in {groupname}')
-            else:
-                print(f"+{number} {me.first_name} couldn't sent Message in {groupname}")
-            time.sleep(random.randint(5, 10))
+            # if client.send_message(groupname,Message):
+            #     user.comment += 1
+            #     print(f'+{number} {me.first_name} has sent a message in {groupname}')
+            # else:
+            #     print(f"+{number} {me.first_name} couldn't sent Message in {groupname}")
+            # time.sleep(random.randint(60, 70))
+            # user.save()
         else:
             print(f'{number} is not authorized So please authorized it')    
         client.disconnect()
     except Exception as e :
         client.disconnect()
         print(e)
+
+def send_messages(view_group,groupname,Message,number,apiid,apihash):
+    try:
+        client = TelegramClient(f'./sessions/{number}',apiid,apihash)
+        user = user_details.objects.filter(number=number).first()
+        client.connect()
+        if client.is_user_authorized():
+            me = client.get_me()
+            client(JoinChannelRequest(groupname))
+            entity = client.get_entity(view_group)
+            if client.send_read_acknowledge(entity):
+                user.views += 1
+                print(f"{me.first_name} {number} have Marked as seen in {view_group}'s chat")
+            else : 
+                print(f"{me.first_name} {number} have No new messages in {view_group}'s chat")
+            if client.send_message(groupname,Message):
+                user.comment += 1
+                print(f'+{number} {me.first_name} has sent a message in {groupname}')
+            else:
+                print(f"+{number} {me.first_name} couldn't sent Message in {groupname}")
+            time.sleep(random.randint(60, 70))
+            user.save()
+        else:
+            print(f'{number} is not authorized So please authorized it')    
+        client.disconnect()
+    except errors.FloodWaitError as e:
+        user.banned = "TEMP BANNED"
+        user.save()
+    except errors.UserBannedInChannelError as e:
+        user.banned = "BANNED"
+        user.save()
+
+    except Exception as e :
+        client.disconnect()
+        print(e)
+    
 
 def view_chat(groupname,number,apiid,apihash):
     try:

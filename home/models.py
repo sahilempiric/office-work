@@ -6,17 +6,30 @@ from utils import LOGGER
 # Create your models here.
 
 class user_details(models.Model):
+    STATUS = (
+        ("ACTIVE", "ACTIVE"),
+        ("FLOOD WAIT","FLOOD WAIT"),
+        ("BANNED","BANNED"),
+        ("DELETED","DELETED")
+    )
     emulator = models.CharField(max_length=255)
     number = models.IntegerField()
+    comment = models.IntegerField()
+    views = models.IntegerField()
     api_id = models.CharField(max_length=255)
     api_hash = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
+    banned = models.CharField(max_length=255,choices=STATUS,default='ACTIVE')
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
 
     def __str__(self) :
         return str(self.number)
 
 class inactive_user(models.Model):
     user = models.ForeignKey(user_details,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
     def __str__(self) :
         return str(self.user)
 
@@ -24,6 +37,8 @@ class User_avds(models.Model):
     avdname = models.CharField(max_length=255)
     port = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now=True,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
 
 
     def __str__(self) -> str:
