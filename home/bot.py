@@ -475,7 +475,7 @@ class Telegram_bot:
             self.click_element('call permission',call_permission_deny_xp,By.ID,timeout=1)
             self.click_element('access call logs','com.android.permissioncontroller:id/permission_deny_button',By.ID,timeout=1)
             self.click_element('dont ask again the permission on call', call_permission_dont_ask_again_xp,By.ID,timeout=1)
-            self.starting_permission += 1
+            # self.starting_permission += 1
 
         total_acc = 0
         while total_acc <3:
@@ -489,7 +489,7 @@ class Telegram_bot:
                 self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
                 self.click_element('start messages', start_messaging_xpath ,timeout=1)
                 if self.starting_permission < 5:
-                    # self.starting_permission += 1
+                    self.starting_permission += 1
                     self.click_element('deny make calls permission','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
                     self.click_element('permission for contacts','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
 
@@ -518,8 +518,13 @@ class Telegram_bot:
                     print(self.number,'====================================================')
                     self.input_text(country_code,'country code',country_code_xpth,By.XPATH)
                     self.input_text(self.croped_number,'mobile number',number_xpth,By.XPATH)
+                    self.click_element('Continue btn','//android.widget.FrameLayout[@content-desc="Done"]',By.XPATH)
                     if self.starting_permission < 5:
+                        self.click_element('dont ask again checkbox', 'com.android.packageinstaller:id/do_not_ask_checkbox',By.ID,timeout=1)
+
                         self.click_element('deny permssion to make calls','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
+                        # self.click_element('dont ask again the permission on call', call_permission_dont_ask_again_xp,By.ID,timeout=1)
+                        self.click_element('dont ask again checkbox', 'com.android.packageinstaller:id/do_not_ask_checkbox',By.ID,timeout=1)
                         self.click_element('deny access call logs','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
                         self.click_element('continue after enter number',continue_btn_after_number_xpth,timeout=1)
 
@@ -533,7 +538,7 @@ class Telegram_bot:
 
                     if self.find_element('Banned number popup','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.TextView',By.XPATH,timeout=5):
                         self.click_element('Ok btn for banned number','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout[2]/android.widget.TextView[2]',By.XPATH)
-                        self.starting_permission = 0
+                        # self.starting_permission = 0
                         self.secound_permission = 0
                         continue
 
@@ -678,6 +683,7 @@ class Telegram_bot:
 
                         login = requests.get(f'http://127.0.0.1:8000/login/{self.number}')
 
+                        self.find_element('Menu btn',triple_row_xpth)
                         # try:
                         #     self.app_driver.activate_app('org.telegram.messenger.web')
                         #     time.sleep(2)

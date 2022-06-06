@@ -19,12 +19,12 @@ class Command(BaseCommand):
         if True:
             if User_avds.objects.filter(avdname = emulator).exists():
                 User_avds.objects.filter(avdname = emulator).delete()
-            # User_avds.objects.all().delete()
+            User_avds.objects.all().delete()
             aa = User_avds.objects.create(
-                avdname=emulator,
+                avdname='emulator',
                 port=5554,
             )
-        else:
+        else: 
             aa = User_avds.objects.filter(avdname = emulator).first()
         print(aa)
         # aa = User_avds.objects.all().first()
