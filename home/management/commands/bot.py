@@ -15,13 +15,13 @@ class Command(BaseCommand):
         # parser.add_argument('emulator', type=str, help='emulator of New user')
 
     def handle(self, *args, **kwargs):
-        emulator = 'bavisi13'
+        emulator = 'emulator1'
         if True:
             if User_avds.objects.filter(avdname = emulator).exists():
                 User_avds.objects.filter(avdname = emulator).delete()
-            User_avds.objects.all().delete()
+            # User_avds.objects.all().delete()
             aa = User_avds.objects.create(
-                avdname='emulator',
+                avdname='emulator1',
                 port=5554,
             )
         else: 

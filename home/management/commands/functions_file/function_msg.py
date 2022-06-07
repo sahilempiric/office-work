@@ -2,7 +2,7 @@ import time
 import random
 from telethon import TelegramClient
 from telethon.sync import TelegramClient
-from home.models import *
+from home.models import user_details
 import telethon,os
 from telethon import errors
 from telethon.tl.functions.channels import JoinChannelRequest
