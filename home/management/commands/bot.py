@@ -1,3 +1,4 @@
+import random
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from telethon import TelegramClient
@@ -15,36 +16,34 @@ class Command(BaseCommand):
         # parser.add_argument('emulator', type=str, help='emulator of New user')
 
     def handle(self, *args, **kwargs):
-        emulator = 'emulator1'
-        if True:
-            if User_avds.objects.filter(avdname = emulator).exists():
-                User_avds.objects.filter(avdname = emulator).delete()
-            # User_avds.objects.all().delete()
-            aa = User_avds.objects.create(
-                avdname='emulator1',
-                port=5554,
+        while True:
+            ports = list(
+                        filter(
+                            lambda y: not User_avds.objects.filter(port=y).exists(),
+                            map(
+                                lambda x: 5550 + x, range(1, 5000)
+                            )
+                        )
+                    )
+            devices = list(
+                filter(
+                    lambda y: not User_avds.objects.filter(avdname=y).exists(),
+                    map(
+                        lambda x: f"telegram_{x}", range(1, 5000)
+                    )
+                )
             )
-        else: 
-            aa = User_avds.objects.filter(avdname = emulator).first()
-        print(aa)
-        # aa = User_avds.objects.all().first()
-        tg = Telegram_bot(aa.avdname)
-        tg.start_driver()
-        tg.check_apk_installation()
-        # tg.restart_avd()
-        # if True:
-        #     time.sleep(10)
-        #     if not tg.connect_to_vpn(country=COUNTRY):
-        #         print(tg.connect_to_vpn(country=COUNTRY))
-        # input('Enter :')
 
-        tg.create_account()
-
-        
-
-        # tg.Test()
-
-
-        
-
-        tg.kill_bot_process(True, True)
+            emulator = random.choice(devices)
+            port = random.choice(ports)
+            aa = User_avds.objects.create(
+                avdname=emulator,
+                port=port,
+            )
+            
+            tg = Telegram_bot(aa.avdname)
+            tg.start_driver()
+            tg.check_apk_installation()
+            tg.connect_to_vpn(country=COUNTRY)
+            tg.create_account()
+            tg.kill_bot_process(True, True)

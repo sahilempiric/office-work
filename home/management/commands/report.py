@@ -10,6 +10,7 @@ from django.db.models import Sum
 import datetime
 from datetime import  timedelta, time
 from django.utils import timezone
+from main import LOGGER
 
 date_from = datetime.datetime.now() - datetime.timedelta(days=1)
 # date_from = timezone.utc.localize(date_from)
@@ -53,6 +54,6 @@ class Command(BaseCommand):
         if text:
             payload = {"text":text}
             print(payload)
-            r = requests.post(WEB_HOOK_URL, json=payload)
-            LOGGER.info(f"WEB HOOK Post Response:")
-            LOGGER.info(r.text)
+            # r = requests.post(WEB_HOOK_URL, json=payload)
+            LOGGER.info(f"WEB HOOK Post Response: ok")
+            # LOGGER.info(r.text)
