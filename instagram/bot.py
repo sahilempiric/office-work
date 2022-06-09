@@ -269,6 +269,17 @@ class TwitterBot:
         #         msg=f"Twitter app installed successfully.",
         #         error=None,
         #     )
+        LOGGER.debug('Check if telegram is installed')
+        if not self.app_driver.is_app_installed("de.mobileconcepts.cyberghost"):
+            LOGGER.debug('cyberghost is not installed, now install it')
+            self.install_apk(self.adb_console_port, "cyberghost")
+            log_activity(
+                self.user_avd.id,
+                action_type="Installcyberghost",
+                msg=f"cyberghost app installed successfully.",
+                error=None,
+            )
+
         LOGGER.debug('Check if instagram is installed')
         if not self.driver().is_app_installed("com.instagram"):
             LOGGER.debug('instagram is not installed, now install it')
@@ -3332,10 +3343,10 @@ class TwitterBot:
             #     follow_count+=1
 
             # self.app_driver.back()
-            suggested_accounts_id = 'com.instagram.android:id/netego_carousel_title'
-            suggested_accounts_ele = self.find_element('Suggesting accounts after follow',suggested_accounts_id,By.ID,timeout=2)
-            if suggested_accounts_ele:self.swip_display(8)
-            else :self.swip_display(5)
+                # suggested_accounts_id = 'com.instagram.android:id/netego_carousel_title'
+                # suggested_accounts_ele = self.find_element('Suggesting accounts after follow',suggested_accounts_id,By.ID,timeout=2)
+                # if suggested_accounts_ele:self.swip_display(8)
+                # else :self.swip_display(5)
 
             # like_comment_share_list.
             for i in like_comment_share_list:

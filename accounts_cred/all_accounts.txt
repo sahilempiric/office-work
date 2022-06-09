@@ -79,3 +79,9 @@
 85257937366  Taylor Murillo  Taylor@1234  ('8', 'Mar', '2002')  taylormurillo9 
 85263771047  Michael Hernandez  Michael@1234  ('13', 'Mar', '2003')  michael428hernandez 
 85252911987  Craig Bradley  Craig@1234  ('1', 'Feb', '1995')  craigbradley1625 
+85260351758  Dale Stone  Dale@1234  ('16', 'Feb', '1990')  dalestone883 
+85252456855  Edwin Chavez  Edwin@1234  ('27', 'Dec', '2003')  edwinchavez359 
+85297832064  Jessica Long  Jessica@1234  ('27', 'May', '1992')  jessicalong7528 
+85292543732  Savannah Jones  Savannah@1234  ('15', 'May', '1998')  savannahjones310 
+85298842477  Lori Rodriguez  Lori@1234  ('11', 'Dec', '1990')  lorirodriguez306 
+85291593120  Dr. Matthew Dalton  Dr.@1234  ('27', 'Aug', '2002')  dr.matthewdalton 

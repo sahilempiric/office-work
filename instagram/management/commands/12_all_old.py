@@ -159,6 +159,8 @@ class Command(BaseCommand):
                         if new_user:
                             if not success_updated_user_prof :
                                 success_updated_user_prof = tb.user_profile_main()
+                                new_user.updated = bool(success_updated_user_prof)
+                                new_user.save()
 
 
                         if success_updated_user_prof :
