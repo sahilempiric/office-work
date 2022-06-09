@@ -16,8 +16,8 @@ client.connect()
 if client.get_me():
     print('Script is started !')
 else:
-    client.send_code_request(number)
-    client.sign_in(number,input('Enter the OTP: '))
+    client.send_code_request(number) #sdgfhgsdygf
+    client.sign_in(number,input('Enter the OTP: '))      
 
 
 client(JoinChannelRequest('xana_1'))
