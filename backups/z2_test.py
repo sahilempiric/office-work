@@ -29,8 +29,11 @@ print( i.id for i in client.get_messages(channel))
 
 for message in client.iter_messages(channel):
     print(message.reply_markup,'----',message.id,'----', message.text)
-    print(message)
-    client.send_message(channel, 'Great update!',comment_to=message.id)
+    # print(message)
+    # client.send_message(channel, 'Great update!',reply_to=message.id)
+
+client.send_message(channel, 'Great update!',comment_to=17)
+
 # print('\n\n',client.iter_messages(channel),'\n\n')
 # app = client
 # with app:
