@@ -10,7 +10,8 @@ class user_details(models.Model):
         ("ACTIVE", "ACTIVE"),
         ("FLOOD WAIT","FLOOD WAIT"),
         ("BANNED","BANNED"),
-        ("DELETED","DELETED")
+        ("DELETED","DELETED"),
+        ("NEED PASSWORD","NEED PASSWORD"),
     )
     emulator = models.CharField(max_length=255)
     number = models.IntegerField()
@@ -25,6 +26,23 @@ class user_details(models.Model):
 
     def __str__(self) :
         return str(self.number)
+
+class comment_view(models.Model):
+    user = models.ForeignKey(user_details,on_delete=models.CASCADE)
+    comment = models.IntegerField(default=0)
+    views = models.IntegerField(default=0)
+    comment_on = models.CharField(default='-',max_length=255)
+    view_on = models.CharField(default='-',max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
+
+class Engagements(models.Model):
+    user = models.ForeignKey(user_details,on_delete=models.CASCADE)
+    views = models.IntegerField(default=0)
+    reaction = models.CharField(default='-',max_length=255)
+    engagement_on = models.CharField(default='-',max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
 
 class inactive_user(models.Model):
     user = models.ForeignKey(user_details,on_delete=models.CASCADE)

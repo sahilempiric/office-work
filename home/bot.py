@@ -282,14 +282,14 @@ class Telegram_bot:
     def driver(self, check_verification=True):
         #  LOGGER.debug('Get driver')
         #  assert self.get_device(), "Device Didn't launch."
-
-        try:
-            if not self.app_driver:
-                self.start_driver()
-            session = self.app_driver.session
-        except CannotStartDriverException as e:
-            raise e
-        except Exception as e:
+        for i in range(3):
+            try:
+                if not self.app_driver:
+                    self.start_driver()
+                session = self.app_driver.session
+            except CannotStartDriverException as e:
+                raise e
+            except Exception as e:
             #  tb = traceback.format_exc()
             #  log_activity(
             #      self.user_avd.id,
@@ -297,9 +297,11 @@ class Telegram_bot:
             #      msg=f"Connect with Appium server",
             #      error=tb,
             #  )
-            LOGGER.warning(e)
-            self.start_driver()
+                LOGGER.warning(e)
+                self.start_driver()
 
+            if self.app_driver : return self.app_driver
+            else:continue
         # check and bypass google captcha
         #  random_sleep()
         # self.perform_verification()
@@ -442,18 +444,43 @@ class Telegram_bot:
         number_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[2]'
         continue_btn_after_number_xpth = '//android.widget.FrameLayout[@content-desc="Done"]'
         call_permission_dont_ask_again_xp = 'com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button'
-        self.app_driver.find_element(By.XPATH,start_messaging_xpath)
-        self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView')
-        self.app_driver.find_element(By.XPATH, continue_contact_xpt,)
-        self.app_driver.find_element(By.ID,call_permission_deny_xp)
-        self.app_driver.find_element(By.ID,'com.android.permissioncontroller:id/permission_deny_button')
-        self.app_driver.find_element( By.ID, call_permission_dont_ask_again_xp)
-        self.app_driver.find_element( By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView')
-        self.app_driver.find_element(By.ID,'com.android.packageinstaller:id/permission_deny_button')
-        self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView')
-        self.app_driver.find_element(By.ID,'com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button')
-        self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView')
-        self.app_driver.find_element(By.ID,'com.android.packageinstaller:id/permission_deny_button')
+        try:
+            self.app_driver.find_element(By.XPATH,start_messaging_xpath)
+        except Exception as e:print(e)
+        
+        try:
+            self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView')
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.XPATH, continue_contact_xpt,)
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.ID,call_permission_deny_xp)
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.ID,'com.android.permissioncontroller:id/permission_deny_button')
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element( By.ID, call_permission_dont_ask_again_xp)
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element( By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView')
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.ID,'com.android.packageinstaller:id/permission_deny_button')
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView')
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.ID,'com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button')
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView')
+        except Exception as e:print(e)
+        try:
+            self.app_driver.find_element(By.ID,'com.android.packageinstaller:id/permission_deny_button')
+        except Exception as e:print(e)
 
 
         pass
@@ -502,12 +529,12 @@ class Telegram_bot:
         while True:
                 try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                 except Exception as e:None
-                self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=2)
-                self.click_element('start messages', start_messaging_xpath ,timeout=1)
+                self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=0)
+                self.click_element('start messages', start_messaging_xpath ,timeout=0)
                 if self.starting_permission < 5:
                     self.starting_permission += 1
-                    self.click_element('deny make calls permission','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
-                    self.click_element('permission for contacts','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
+                    self.click_element('deny make calls permission','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=0)
+                    self.click_element('permission for contacts','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=0)
                 random_sleep(2,6)
                 all_ele_li = self.app_driver.find_elements_by_xpath('//*')
                 mobile_number_page = False
@@ -517,14 +544,14 @@ class Telegram_bot:
                         break
 
                 if mobile_number_page or  self.find_element('confirm phone number page','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]',By.XPATH,timeout=3):
-                    
+                    # messages.sendReaction
                     self.number = str(get_number())
                     self.croped_number = str(self.number)[3:]
                     if self.starting_permission < 4:
-                        self.click_element('ask for call permission','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView',timeout=1)
-                        self.click_element('deny for permission of call','com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button',By.ID,timeout=1)
-                        self.click_element('all to recevie calls','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView',By.XPATH,timeout=2)
-                        self.click_element('permission manage call','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
+                        self.click_element('ask for call permission','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView',timeout=0)
+                        self.click_element('deny for permission of call','com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button',By.ID,timeout=0)
+                        self.click_element('all to recevie calls','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView',By.XPATH,timeout=0)
+                        self.click_element('permission manage call','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=0)
 
                     print(self.number,'====================================================')
                     self.input_text(country_code,'country code',country_code_xpth,By.XPATH)
@@ -533,19 +560,19 @@ class Telegram_bot:
 
                     self.click_element('Continue btn','//android.widget.FrameLayout[@content-desc="Done"]',By.XPATH)
                     if self.starting_permission < 5:
-                        self.click_element('dont ask again checkbox', 'com.android.packageinstaller:id/do_not_ask_checkbox',By.ID,timeout=1)
+                        self.click_element('dont ask again checkbox', 'com.android.packageinstaller:id/do_not_ask_checkbox',By.ID,timeout=0)
 
-                        self.click_element('deny permssion to make calls','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
-                        self.click_element('dont ask again checkbox', 'com.android.packageinstaller:id/do_not_ask_checkbox',By.ID,timeout=1)
-                        self.click_element('deny access call logs','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
-                        self.click_element('continue after enter number',continue_btn_after_number_xpth,timeout=1)
+                        self.click_element('deny permssion to make calls','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=0)
+                        self.click_element('dont ask again checkbox', 'com.android.packageinstaller:id/do_not_ask_checkbox',By.ID,timeout=0)
+                        self.click_element('deny access call logs','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=0)
+                    self.click_element('continue after enter number',continue_btn_after_number_xpth,timeout=10)
 
                     if self.starting_permission < 5:
-                        self.click_element('ask for call permission','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView',timeout=1)
-                        self.click_element('deny for permission of call','com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button',By.ID,timeout=1)
-                        self.click_element('access call logs','com.android.permissioncontroller:id/permission_deny_button',By.ID,timeout=1)
-                        self.click_element('permission manage call','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
-                        self.click_element('deny access call logs','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=1)
+                        self.click_element('ask for call permission','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView',timeout=0)
+                        self.click_element('deny for permission of call','com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button',By.ID,timeout=0)
+                        self.click_element('access call logs','com.android.permissioncontroller:id/permission_deny_button',By.ID,timeout=0)
+                        self.click_element('permission manage call','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=0)
+                        self.click_element('deny access call logs','com.android.packageinstaller:id/permission_deny_button',By.ID,timeout=0)
 
                     if self.find_element('Banned number popup','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.TextView',By.XPATH,timeout=5):
                         self.click_element('Ok btn for banned number','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout[2]/android.widget.TextView[2]',By.XPATH)
@@ -577,8 +604,8 @@ class Telegram_bot:
                             input_field= self.input_text(str(self.otp)[otp_input],f'otp input {otp_input+1}',f'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[{otp_input+1}]')
 
                         if self.starting_permission < 4:
-                            self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID)
-                            self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH)
+                            self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID,0)
+                            self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,0)
                             
                 self.outer_loop = False
                 random_sleep(1,4)
@@ -603,17 +630,17 @@ class Telegram_bot:
                     self.input_text(self.lname,'Last name','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout[2]/android.widget.ScrollView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout[1]/android.widget.EditText[2]',By.XPATH)
                     self.click_element('Continue btn','//android.widget.FrameLayout[@content-desc="Done"]/android.widget.ImageView',By.XPATH)
                     if self.starting_permission < 4:
-                        self.click_element('permission for contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2)
-                        self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2)
+                        self.click_element('permission for contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0)
+                        self.click_element('permission of file access','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0)
                     self.outer_loop = False
                     random_sleep(1,4)
                 if self.starting_permission < 4:
-                    self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=2)
-                    self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=2)
-                    if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2):None
-                    else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=2)
-                    if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=2): None
-                    else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=2)
+                    self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                    self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                    if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0):None
+                    else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
+                    if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0): None
+                    else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
 
 
 
@@ -629,13 +656,13 @@ class Telegram_bot:
 
                     try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                     except Exception as e:None
-                    self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=1)
-                    self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=1)
-                    self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=1)
-                    if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1):None
-                    else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
-                    if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1): None
-                    else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
+                    self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=0)
+                    self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                    self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                    if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0):None
+                    else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
+                    if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0): None
+                    else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
                     triple_row_xpth = '//android.widget.ImageView[@content-desc="Open navigation menu"]'
                     add_account_row_xpth = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]'
 
@@ -697,7 +724,7 @@ class Telegram_bot:
                     if new_user_add == False and created_application == True:
 
 
-                        client = TelegramClient(self.number,otp_request['app_api_id'],otp_request['app_api_hash'])
+                        client = TelegramClient(f'./sessions/{self.number}',otp_request['app_api_id'],otp_request['app_api_hash'])
                         client.connect()
                         client.send_code_request(self.number)
 
@@ -705,13 +732,13 @@ class Telegram_bot:
                         if not self.find_element('Menu btn',triple_row_xpth):
                             try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                             except Exception as e:None
-                            self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=1)
-                            self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=1)
-                            self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=1)
-                            if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1):None
-                            else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
-                            if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1): None
-                            else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
+                            self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=0)
+                            self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                            self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                            if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0):None
+                            else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
+                            if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0): None
+                            else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
 
                         random_sleep(5,9)
                         telegram_otp1 = self.app_driver.find_element(By.XPATH,'/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]')
@@ -745,7 +772,32 @@ class Telegram_bot:
                                 break
 
                         client.sign_in(self.number,code=otp_texts)
-                        
+                        from pyrogram import Client
+                        app = Client(
+                            f'./sessions/{self.number}_p',
+                            api_id=f"{otp_request['app_api_id']}",
+                            api_hash=f"{otp_request['app_api_hash']}",
+                            phone_number=str(self.number)
+                        )
+                        app.connect()
+                        is_authorized = False
+                        try:is_authorized = True if app.get_me() else False
+                        except Exception as e:...
+                        if is_authorized:...
+                        else:
+                            sent_code = app.send_code(phone_number=str(self.number))
+                            # print(sent_code.phone_code_hash)
+                            phone_code_hash_ = sent_code.phone_code_hash
+                            time.sleep(4)
+                            telegram_msg = client.get_dialogs()[0].message
+                            # print(str(telegram_msg.text).replace('**Login code:**','').split(' ')[1].replace('.',''))
+                            try:
+                                otp__ = str(telegram_msg.text).replace('**Login code:**','').split(' ')[1].replace('.','')
+                            except Exception as e:otp__=''
+                            app.sign_in(phone_number=str(self.number),phone_code_hash=phone_code_hash_,phone_code=f"{otp__}")
+
+                        app.disconnect()
+
                         if client.get_me():
                             self.username = str(self.fname)+f'_az{random.randint(10000,99999)}'
 
@@ -770,13 +822,13 @@ class Telegram_bot:
                         if not self.find_element('Menu btn',triple_row_xpth):
                             try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                             except Exception as e:None
-                            self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=1)
-                            self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=1)
-                            self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=1)
-                            if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1):None
-                            else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
-                            if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=1): None
-                            else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=1)
+                            self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=0)
+                            self.click_element('Access of contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                            self.click_element('access for contacts','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TextView[2]',By.XPATH,timeout=0)
+                            if self.click_element('all access of contacts','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0):None
+                            else:self.click_element('all access of contacts','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
+                            if self.click_element('all access of files','com.android.permissioncontroller:id/permission_allow_button',By.ID,timeout=0): None
+                            else :self.click_element('all access of files','com.android.packageinstaller:id/permission_allow_button',By.ID,timeout=0)
 
                         self.click_element('Menu btn',triple_row_xpth)
                         username_btn = False
@@ -809,5 +861,5 @@ class Telegram_bot:
                         # except Exception as e:None
 
 
-                if new_user_add and update_username_ == True:
+                if new_user_add == True:
                     return True

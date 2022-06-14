@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from telethon import TelegramClient
+from home.management.commands.functions_file.function_msg import pyrogram_authorization
 from home.models import user_details
 
 class Command(BaseCommand):
@@ -23,7 +24,8 @@ class Command(BaseCommand):
         else :
             tclient = TelegramClient(f'./sessions/{number}',api_id,api_hash)
             if tclient.start(phone=number):
-                user_details.objects.create(number=number,api_id=api_id,api_hash=api_hash,username='Rrfgju',emulator='-')
+                user_details.objects.create(number=number,api_id=api_id,api_hash=api_hash,username='-',emulator='-')
+                pyrogram_authorization(number=number,apiid=api_id,apihash=api_hash,client_=tclient)
                 print('User Exists in database ')
             else:
                 print('Please Enter Valid Credentials or OTP !')

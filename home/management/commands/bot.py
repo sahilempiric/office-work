@@ -17,33 +17,38 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         while True:
-            ports = list(
-                        filter(
-                            lambda y: not User_avds.objects.filter(port=y).exists(),
-                            map(
-                                lambda x: 5550 + x, range(1, 5000)
+            try:
+                ports = list(
+                            filter(
+                                lambda y: not User_avds.objects.filter(port=y).exists(),
+                                map(
+                                    lambda x: 5550 + x, range(1, 5000)
+                                )
                             )
                         )
-                    )
-            devices = list(
-                filter(
-                    lambda y: not User_avds.objects.filter(avdname=y).exists(),
-                    map(
-                        lambda x: f"telegram_{x}", range(1, 5000)
+                devices = list(
+                    filter(
+                        lambda y: not User_avds.objects.filter(avdname=y).exists(),
+                        map(
+                            lambda x: f"telegram_{x}", range(1, 5000)
+                        )
                     )
                 )
-            )
 
-            emulator = random.choice(devices)
-            port = random.choice(ports)
-            aa = User_avds.objects.create(
-                avdname=emulator,
-                port=port,
-            )
-            
-            tg = Telegram_bot(aa.avdname)
-            tg.start_driver()
-            tg.check_apk_installation()
-            tg.connect_to_vpn(country=COUNTRY)
-            tg.create_account()
-            tg.kill_bot_process(True, True)
+                emulator = random.choice(devices)
+                port = random.choice(ports)
+                aa = User_avds.objects.create(
+                    avdname=emulator,
+                    port=port,
+                )
+                
+                tg = Telegram_bot(aa.avdname)
+                tg.start_driver()
+                tg.check_apk_installation()
+                # tg.connect_to_vpn(country=COUNTRY)
+                tg.create_account()
+
+            except Exception as e:
+                print(e)
+            finally:
+                tg.kill_bot_process(True, True)

@@ -28,8 +28,9 @@ class Command(BaseCommand):
         for i in aa:
             # time.sleep(1)
             # from home.management.commands.functions_file.function_msg import script_chat
-            user = aa[-1]
-            send_messages('qatestingxana','qatestingxana',random.choice(COMMENTS_),user.number,user.api_id,user.api_hash)
+            user = i
+            send_messages('piyush_0012','piyush_0012',random.choice(COMMENTS_),user.number,user.api_id,user.api_hash)
+            # send_messages('qatestingxana','qatestingxana',random.choice(COMMENTS_),user.number,user.api_id,user.api_hash)
             # valu,bcs = script_chat(1,user.number,user.api_id,user.api_hash,random.choice(COMMENTS_),'qatestingxana')
             # # print(valu,bcs,'///////////////')
             # if valu == False:

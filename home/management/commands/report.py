@@ -24,18 +24,17 @@ class Command(BaseCommand):
         comment = user_details.objects.aggregate(Sum('comment'))['comment__sum']
         views = user_details.objects.aggregate(Sum('views'))['views__sum']
         banned = user_details.objects.aggregate(Sum('banned'))['banned__sum']
-        comment_24 = user_details.objects.filter(created_at__gte=date_from).aggregate(Sum('comment'))['comment__sum']
-        views_24 = user_details.objects.filter(created_at__gte=date_from).aggregate(Sum('views'))['views__sum']
+        comment_24 = comment_view.objects.filter(created_at__gte=date_from).aggregate(Sum('comment'))['comment__sum']
+        views_24 = comment_view.objects.filter(created_at__gte=date_from).aggregate(Sum('views'))['views__sum']
         banned_24 = user_details.objects.filter(created_at__gte=date_from).aggregate(Sum('banned'))['banned__sum']
-        # print(all_user)
-
+        banned_24 = 0 if banned_24 == None else banned_24
         print(total_acc,total_acc24,comment,comment_24,views,views_24)
         report = [
             f'Total accounts : {total_acc}',
             f'Total send comments : {comment}',
             f'Total send Views : {views}',
             f'Total banned user : {banned}',
-            f'Total accounts created in last 24 hours  : {total_acc}',
+            f'Total accounts created in last 24 hours  : {total_acc24}',
             f'Total send comments in last 24 hours: {comment_24}',
             f'Total send Views in last 24 hours: {views_24}',
             f'Total banned user in last 24 hours: {banned_24}',
@@ -54,6 +53,7 @@ class Command(BaseCommand):
         if text:
             payload = {"text":text}
             print(payload)
-            # r = requests.post(WEB_HOOK_URL, json=payload)
+            # r = requests.post(WEB_HOOK_URL)
+            r = requests.post(WEB_HOOK_URL, json=payload)
             LOGGER.info(f"WEB HOOK Post Response: ok")
             # LOGGER.info(r.text)
