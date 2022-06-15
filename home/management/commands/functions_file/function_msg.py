@@ -206,7 +206,7 @@ import datetime
 import pytz
 
 def engagement_msg_id(groupname):
-    last_few_days= datetime.datetime.now() - datetime.timedelta(days=4)
+    last_few_days= datetime.datetime.now() - datetime.timedelta(days=2)
     msg_id = 0
     utc=pytz.UTC
     msg_id_li = []
@@ -250,13 +250,13 @@ def engagement_msg_id(groupname):
 
 def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
     reaction_list = ["❤️","👍","🔥"]
-
+    view_nu = 0
     user = user_details.objects.filter(number=number).first()
     try:
         client = TelegramClient(f'./sessions/{number}',apiid,apihash)
         pyrogram_authorization(number,apiid,apihash,client)
         
-        engagement_data = Engagements.objects.create(user = user)
+        # engagement_data = Engagements.objects.create(user = user)
         client.connect()
         if client.is_user_authorized():
             me = client.get_me()
@@ -266,8 +266,8 @@ def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
             if client.send_read_acknowledge(entity):
                 user.views += 1
                 user.save()
-                engagement_data.views += 1
-                engagement_data.save()
+                view_nu += 1
+                # engagement_data.save()
                 print(f"{me.first_name} {number} have Marked as seen in {groupname}'s chat")
             else : 
                 print(f"{me.first_name} {number} have No new messages in {groupname}'s chat")
@@ -279,17 +279,32 @@ def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
             
 
             if p_client.get_me():
-                message_id_len = 0
-                if not random_:
-                    message_id_len = len(Message_id)
-                    Message_id = random.sample(Message_id,k=message_id_len)
-                else: Message_id = random.sample(Message_id,k=random_)
+
+
+                # message_id_len = 0
+
+                # if not random_ :
+                #     message_id_len = len(Message_id)
+                #     Message_id = random.sample(Message_id,k=message_id_len)
+                # else: 
+                #     if random_ > len(Message_id):
+                #         Message_id = random.sample(Message_id,k=random_)
+                #     else:
+                #         message_id_len = len(Message_id)
+                #         Message_id = random.sample(Message_id,k=message_id_len)
+
+
+
                 for msg in Message_id:
                     reaction = random.choice(reaction_list)
                     if p_client.send_reaction(groupname,msg,reaction):
-                        engagement_data.reaction = reaction
-                        engagement_data.engagement_on = groupname
-                        engagement_data.save()
+                        Engagements.objects.create(user = user,
+                        reaction = reaction,
+                        engagement_on = groupname,
+                        views = view_nu
+                        )
+                        user.reaction += 1
+                        user.save()
                         print(f"{me.first_name} has send reaction {reaction} on message id : {msg} of {groupname} channel / group")
                     else:
                         print(f"{me.first_name} couldn't send reaction {reaction} on message id : {msg} of {groupname} channel / group")

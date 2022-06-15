@@ -770,7 +770,7 @@ class Telegram_bot:
                                 otp_texts = str(msg_text).replace('Login code:','').strip().split('.')[0]
                                 print(otp_texts,'======================')
                                 break
-
+                        
                         client.sign_in(self.number,code=otp_texts)
                         from pyrogram import Client
                         app = Client(
@@ -813,6 +813,8 @@ class Telegram_bot:
                             new_user_add = True
                             break
                     time.sleep(3)
+                    self.driver()
+
                     try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                     except Exception as e:None
                     self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH)
@@ -820,6 +822,8 @@ class Telegram_bot:
                     # 
                     if not update_username_: # for update username
                         if not self.find_element('Menu btn',triple_row_xpth):
+
+                            self.driver()
                             try:self.app_driver.start_activity('org.telegram.messenger.web','org.telegram.ui.LaunchActivity')
                             except Exception as e:None
                             self.click_element('deny for upgrade app','/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.TextView',By.XPATH,timeout=0)
@@ -834,6 +838,7 @@ class Telegram_bot:
                         username_btn = False
                         self.click_element('Profile btn','/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.view.View',By.XPATH)
                         random_sleep(3,7)
+                        self.driver()
                         try:
                             all_menu_ele = self.app_driver.find_elements_by_xpath('//*')
                             for ele in all_menu_ele:

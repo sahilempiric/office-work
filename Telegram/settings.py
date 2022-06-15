@@ -131,4 +131,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-WEB_HOOK_URL = "https://hooks.slack.com/services/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" #  
+import os
+
+
+SYSTEM_NO = os.getenv('SYSTEM_NO', '')

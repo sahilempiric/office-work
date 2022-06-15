@@ -20,6 +20,7 @@ class user_details(models.Model):
     api_id = models.CharField(max_length=255)
     api_hash = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
+    reaction = models.IntegerField(default=0)
     banned = models.CharField(max_length=255,choices=STATUS,default='ACTIVE')
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)

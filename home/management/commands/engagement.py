@@ -5,7 +5,7 @@ from telethon import TelegramClient
 from home.management.commands.functions_file.function_msg import engagement, engagement_msg_id
 from home.models import user_details
 from main import LOGGER
-import random
+import random, os
 
 reaction_list = ["❤️","👍","🔥"]
 definer_ = '''XANA has sold out its first metaverse avatar wearable NFTs by Hiroko Koshino, the world-renowned designer.
@@ -25,15 +25,16 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
 
         all_active_user = user_details.objects.filter(banned="ACTIVE").order_by('?')
-        ENGAGEMENT_COUNT = 100
+        # ENGAGEMENT_COUNT = 100
         # AGENT_USER = 'xanaofficial'
-        AGENT_USER = 'xana_1234'
+        # AGENT_USER = 'xana_1234'
 
         # for get the message id
         # test_user = all_active_user[0]
-        
+        AGENT_USER = str(os.getenv('AGENT_USER',''))
+        ENGAGEMENT_COUNT = int(os.getenv('ENGAGEMENT_COUNT',''))
         message_id = engagement_msg_id(groupname=AGENT_USER)
-
+        print(AGENT_USER,ENGAGEMENT_COUNT)
         print(message_id,'---1')
 
         if message_id:
@@ -43,5 +44,5 @@ class Command(BaseCommand):
 
         else:
             LOGGER.info('We could not find the message of which we are looking for to do engagement.')
-
+        
         ...

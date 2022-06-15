@@ -24,9 +24,12 @@ class Command(BaseCommand):
         comment = user_details.objects.aggregate(Sum('comment'))['comment__sum']
         views = user_details.objects.aggregate(Sum('views'))['views__sum']
         banned = user_details.objects.aggregate(Sum('banned'))['banned__sum']
+        banned = user_details.objects.exclude(banned='ACTIVE').count()
+        reaction = user_details.objects.aggregate(Sum('reaction'))['reaction__sum']
         comment_24 = comment_view.objects.filter(created_at__gte=date_from).aggregate(Sum('comment'))['comment__sum']
         views_24 = comment_view.objects.filter(created_at__gte=date_from).aggregate(Sum('views'))['views__sum']
         banned_24 = user_details.objects.filter(created_at__gte=date_from).aggregate(Sum('banned'))['banned__sum']
+        reaction_24 = Engagements.objects.all().exclude(reaction = '-',created_at__lte=date_from,).count()
         banned_24 = 0 if banned_24 == None else banned_24
         print(total_acc,total_acc24,comment,comment_24,views,views_24)
         report = [
@@ -34,10 +37,12 @@ class Command(BaseCommand):
             f'Total send comments : {comment}',
             f'Total send Views : {views}',
             f'Total banned user : {banned}',
+            f'Total reaction user : {reaction}',
             f'Total accounts created in last 24 hours  : {total_acc24}',
             f'Total send comments in last 24 hours: {comment_24}',
             f'Total send Views in last 24 hours: {views_24}',
             f'Total banned user in last 24 hours: {banned_24}',
+            f'Total reaction user in last 24 hours: {reaction_24}',
         ]
         text = ""
         text += "*" * 50+'\n'
