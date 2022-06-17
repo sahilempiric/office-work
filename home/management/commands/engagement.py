@@ -24,18 +24,28 @@ class Command(BaseCommand):
     help = 'For engagement'
     def handle(self, *args, **kwargs):
 
-        all_active_user = user_details.objects.filter(banned="ACTIVE").order_by('?')
+        all_active_user = user_details.objects.filter(status="ACTIVE").order_by('?')
         # ENGAGEMENT_COUNT = 100
         # AGENT_USER = 'xanaofficial'
         # AGENT_USER = 'xana_1234'
 
         # for get the message id
         # test_user = all_active_user[0]
+
         AGENT_USER = str(os.getenv('AGENT_USER',''))
         ENGAGEMENT_COUNT = int(os.getenv('ENGAGEMENT_COUNT',''))
+        active_user_count = user_details.objects.filter(status="ACTIVE").count()
+        if active_user_count < ENGAGEMENT_COUNT:
+            ENGAGEMENT_COUNT = active_user_count
+            LOGGER.error(f'There is not sufficient user in Database and there are only {active_user_count}, Thus only these user will do the engagement')
+        # if user_details.objects.filter(status="")
+
+
+        
         message_id = engagement_msg_id(groupname=AGENT_USER)
         print(AGENT_USER,ENGAGEMENT_COUNT)
         print(message_id,'---1')
+
 
         if message_id:
             for i in range(ENGAGEMENT_COUNT):

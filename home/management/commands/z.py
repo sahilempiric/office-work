@@ -12,46 +12,146 @@ class Command(BaseCommand):
     help = 'send message as per csv'
 
     def handle(self,*args, **kwargs):
+        user_li = user_details.objects.all()
+        print(len(user_li))
+        for user in user_li:
+            number = user.number
+            apiid = user.api_id
+            apihash = user.api_hash
+            print(number)
+            try:
+                client = TelegramClient(f'./sessions/{number}',apiid,apihash)
+        #             # pyrogram_authorization(number,apiid,apihash,client)
 
-        aa = user_details.objects.all()
+        #     #         # engagement_data = Engagements.objects.create(user = user)
+                client.connect()
+        #     #         if client.is_user_authorized():
+                me = client.get_me()
+        #     #             print(me.first_name)
+                    
+                p_client = Client(f'./sessions/{number}_p',api_id=f"{apiid}",api_hash=f"{apihash}",phone_number=str(number))
+                p_client.connect()
+
+                p_client.get_me()
+                            
+                p_client.disconnect()
+        #         client.disconnect()
+        # #         else:
+        # #             inactive_user.objects.create(
+        # #             user = user,
+        # #             status = 'NOT AUTHORIZED'
+        # #         )
+        # #             user.status = "NOT AUTHORIZED"
+        # #             user.save()
+        # #             LOGGER.info(f'{number} is not authorized So please authorized it')    
+            except p_errors.SessionPasswordNeeded as e:
+                LOGGER.error(f'there {number} is SessionPasswordNeeded error')
+                if not inactive_user.objects.filter(user=user).exists():
+                    inactive_user.objects.create(
+                        user = user,
+                        status = 'NEED PASSWORD'
+                    )
+                user.status = 'NEED PASSWORD'
+                user.save()
+            except p_errors.PhoneNumberBanned as e:
+                LOGGER.error(f'there {number} is PhoneNumberBanned error')
+                if not inactive_user.objects.filter(user=user).exists():
+                    inactive_user.objects.create(
+                        user = user,
+                        status = 'BANNED'
+                    )
+                user.status = 'BANNED'
+                user.save()
+            except p_errors.AuthKeyUnregistered as e:
+                LOGGER.error(f'there {number} is AuthKeyUnregistered error')
+                if not inactive_user.objects.filter(user=user).exists():
+                    inactive_user.objects.create(
+                        user = user,
+                        status = 'NOT AUTHORIZED'
+                    )
+                user.status = 'NOT AUTHORIZED'
+                user.save()
+            except errors.AuthBytesInvalidError as e:
+                LOGGER.error(f'there {number} is AuthBytesInvalidError error')
+            except errors.FloodWaitError as e:
+                LOGGER.error(f'there {number} is FloodWaitError error')
+                if not inactive_user.objects.filter(user=user).exists():
+                    inactive_user.objects.create(
+                        user = user,
+                        status = "TEMP BANNED"
+                    )
+                user.status = "TEMP BANNED"
+                user.save()
+            except errors.UserBannedInChannelError as e:
+                LOGGER.error(f'there {number} is UserBannedInChannelError error')
+
+                LOGGER.error('This user is banned from the channel / group')
+
+            except Exception as e :
+                client.disconnect()
+                LOGGER.info(e)
+
+
+
+
+
+
+
+        # aa = user_details.objects.exclude(status = "ACTIVE")
+        # print(aa)
+
+        # for user in aa:
+        #     a = inactive_user.objects.create(
+        #         user = user,
+        #         status= user.status
+        #     )
+        #     print(a)
+
+
+
+
+
+
+
+
         count = 0
         succ_count = 0
         # for i in range(60):
-        for i in aa:
-            user = i
-            this_client = TelegramClient(f'./sessions/{user.number}',user.api_id,user.api_hash)
-            this_client.connect() 
-            try:
-                this_client(JoinChannelRequest('pardeshi12311'))
-                me = this_client.get_me()
-                if this_client.send_read_acknowledge('pardeshi12311'):
-                    user.views += 1
-                    user.save()
-                    print(f"{me.first_name} have Marked as seen in {'pardeshi12311'}'s chat")
-                else : 
-                    None
-                    print(f"{me.first_name} have No new messages in {'pardeshi12311'}'s chat")
-                # this_client.send_message('pardeshi12311', 'Hi')
-            except errors.FloodWaitError as e:
-                user.banned = "FLOOD WAIT"
-                user.save()
-                # e.seconds is how many seconds you have
-                # to wait before making the request again.
-                print('Flood for', e.seconds)
-            except errors.UserBannedInChannelError as e:
-                user.banned = "BANNED"
-                user.save()
-                print('user is banned')
-            except errors.ChatWriteForbiddenError as e:
-                # user.banned = "FLOOD WAIT"
-                # user.save()
-                print('user is banned to send message on chat')
-            except errors.UserDeactivatedBanError as e:
-                user.banned = "DELETED"
-                user.save()
-                print('user is has been deleted')
+        # for i in aa:
+        #     user = i
+        #     this_client = TelegramClient(f'./sessions/{user.number}',user.api_id,user.api_hash)
+        #     this_client.connect() 
+        #     try:
+        #         this_client(JoinChannelRequest('pardeshi12311'))
+        #         me = this_client.get_me()
+        #         if this_client.send_read_acknowledge('pardeshi12311'):
+        #             user.views += 1
+        #             user.save()
+        #             print(f"{me.first_name} have Marked as seen in {'pardeshi12311'}'s chat")
+        #         else : 
+        #             None
+        #             print(f"{me.first_name} have No new messages in {'pardeshi12311'}'s chat")
+        #         # this_client.send_message('pardeshi12311', 'Hi')
+        #     except errors.FloodWaitError as e:
+        #         user.status = "FLOOD WAIT"
+        #         user.save()
+        #         # e.seconds is how many seconds you have
+        #         # to wait before making the request again.
+        #         print('Flood for', e.seconds)
+        #     except errors.UserBannedInChannelError as e:
+        #         user.status = "BANNED"
+        #         user.save()
+        #         print('user is banned')
+        #     except errors.ChatWriteForbiddenError as e:
+        #         # user.status = "FLOOD WAIT"
+        #         # user.save()
+        #         print('user is banned to send message on chat')
+        #     except errors.UserDeactivatedBanError as e:
+        #         user.status = "DELETED"
+        #         user.save()
+        #         print('user is has been deleted')
 
-            this_client.disconnect() 
+        #     this_client.disconnect() 
 
 
             # if not this_client.is_user_authorized():

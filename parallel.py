@@ -12,7 +12,6 @@ from home.conf import APPIUM_SERVER_HOST, APPIUM_SERVER_PORT
 from utils import kill_process_after_waiting, run_cmd_without_exit
 from utils import run_cmd, get_listening_pid, get_commands_by_pattern
 
-
 def get_appium_pids():
     appium_main_script = 'appium/build/lib/main.js'
     appium_cmd_pattern = f"'[n]ode.*bin/appium|[n]ode.*{appium_main_script}'"

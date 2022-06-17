@@ -1,3 +1,4 @@
+from email import message
 from django.db import models
 import random, subprocess
 
@@ -8,6 +9,7 @@ from utils import LOGGER
 class user_details(models.Model):
     STATUS = (
         ("ACTIVE", "ACTIVE"),
+        ("NOT AUTHORIZED", "NOT AUTHORIZED"),
         ("FLOOD WAIT","FLOOD WAIT"),
         ("BANNED","BANNED"),
         ("DELETED","DELETED"),
@@ -21,7 +23,7 @@ class user_details(models.Model):
     api_hash = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     reaction = models.IntegerField(default=0)
-    banned = models.CharField(max_length=255,choices=STATUS,default='ACTIVE')
+    status = models.CharField(max_length=255,choices=STATUS,default='ACTIVE')
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
 
@@ -30,10 +32,25 @@ class user_details(models.Model):
 
 class comment_view(models.Model):
     user = models.ForeignKey(user_details,on_delete=models.CASCADE)
-    comment = models.IntegerField(default=0)
+    comment = models.TextField(default='-')
     views = models.IntegerField(default=0)
     comment_on = models.CharField(default='-',max_length=255)
     view_on = models.CharField(default='-',max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
+
+class comments(models.Model):
+    user = models.ForeignKey(user_details,on_delete=models.CASCADE)
+    comment = models.TextField(default='-')
+    comment_on = models.CharField(default='-',max_length=255)
+    message_on = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
+
+class view(models.Model):
+    user = models.ForeignKey(user_details,on_delete=models.CASCADE)
+    views_on = models.CharField(default='-',max_length=255)
+    # message_on = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
 
@@ -42,13 +59,23 @@ class Engagements(models.Model):
     views = models.IntegerField(default=0)
     reaction = models.CharField(default='-',max_length=255)
     engagement_on = models.CharField(default='-',max_length=255)
+    message_on = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
 
 class inactive_user(models.Model):
+    STATUS = (
+        ("NOT AUTHORIZED", "NOT AUTHORIZED"),
+        ("FLOOD WAIT","FLOOD WAIT"),
+        ("BANNED","BANNED"),
+        ("DELETED","DELETED"),
+        ("NEED PASSWORD","NEED PASSWORD"),
+    )
     user = models.ForeignKey(user_details,on_delete=models.CASCADE)
+    status = models.CharField(max_length=255,choices=STATUS,default='ACTIVE')
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
+    
     def __str__(self) :
         return str(self.user)
 

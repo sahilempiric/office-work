@@ -133,5 +133,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import os
 
-
+CONN_HEALTH_CHECKS = True
 SYSTEM_NO = os.getenv('SYSTEM_NO', '')

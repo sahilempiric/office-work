@@ -5,7 +5,7 @@ from telethon.tl.functions.channels import JoinChannelRequest
 # from telethon.tl.functions.
 # from telethon.tl.
 # from telethon.tl.functions.messages import rea
-from pyrogram.raw.functions.messages import setChatAvailableReactions#
+# from pyrogram.raw.functions.messages import setChatAvailableReactions#
 
 # number = 919978911838
 # id_ = 14251965
@@ -69,9 +69,9 @@ app = Client(
 
 
 app.connect()
-aa = app.send_code()
-print(aa)
-
+# aa = app.send_code()
+# print(aa)
+print(app.get_me())
 # with app:app.sign_in(phone_number=str(number),phone_code_hash=phone_code_hash,phone_code=otp__)
 
 

@@ -127,7 +127,7 @@ print(app.get_me(),'\n\n\n\n\n')
 
 
 
-print(app.('xana_1234'))
+print(app.get_chat('xana_1234'))
 
 
 
