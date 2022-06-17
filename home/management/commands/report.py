@@ -29,7 +29,7 @@ class Command(BaseCommand):
         comment_24 = comment_view.objects.filter(created_at__gte=date_from).count()
         views_24 = view.objects.filter(created_at__gte=date_from).count()
         banned_24 = inactive_user.objects.filter(created_at__gte=date_from).count()
-        reaction_24 = Engagements.objects.filter(created_at__lte=date_from,).exclude(reaction = '-').count()
+        reaction_24 = Engagements.objects.filter(created_at__gte=date_from,).exclude(reaction = '-').count()
         banned_24 = 0 if banned_24 == None else banned_24
         # print(total_acc,total_acc24,comment,comment_24,views,views_24)
         report = [
