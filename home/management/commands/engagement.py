@@ -1,4 +1,5 @@
 from cgi import print_directory
+from itertools import count
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from telethon import TelegramClient
@@ -24,7 +25,7 @@ class Command(BaseCommand):
     help = 'For engagement'
     def handle(self, *args, **kwargs):
 
-        all_active_user = user_details.objects.filter(status="ACTIVE").order_by('?')
+        all_active_user = list(user_details.objects.filter(status="ACTIVE").order_by('?'))
         # ENGAGEMENT_COUNT = 100
         # AGENT_USER = 'xanaofficial'
         # AGENT_USER = 'xana_1234'
@@ -32,27 +33,46 @@ class Command(BaseCommand):
         # for get the message id
         # test_user = all_active_user[0]
 
-        AGENT_USER = str(os.getenv('AGENT_USER',''))
-        ENGAGEMENT_COUNT = int(os.getenv('ENGAGEMENT_COUNT',''))
-        active_user_count = user_details.objects.filter(status="ACTIVE").count()
+        # AGENT_USER = 'qatestingxana'
+        AGENT_USER = 'piyush_0012'
+        AGENT_USER = 'xana_1234'
+        # AGENT_USER = 'xana_text'
+        # AGENT_USER = str(os.getenv('AGENT_USER',''))
+        # ENGAGEMENT_COUNT = int(os.getenv('ENGAGEMENT_COUNT',''))
+        ENGAGEMENT_COUNT = 1000
+        print(ENGAGEMENT_COUNT,'================')
+        active_user_count = len(all_active_user)
         if active_user_count < ENGAGEMENT_COUNT:
             ENGAGEMENT_COUNT = active_user_count
             LOGGER.error(f'There is not sufficient user in Database and there are only {active_user_count}, Thus only these user will do the engagement')
+            # return
         # if user_details.objects.filter(status="")
 
 
-        
+        print(all_active_user)
         message_id = engagement_msg_id(groupname=AGENT_USER)
-        print(AGENT_USER,ENGAGEMENT_COUNT)
-        print(message_id,'---1')
-
-
+        count_ = 0
         if message_id:
-            for i in range(ENGAGEMENT_COUNT):
-                user = all_active_user[i]
+            
+            for i in range(len(all_active_user)):
+                user = all_active_user.pop(0)
+                count_ += 1
                 engagement(random_=2,groupname=AGENT_USER,Message_id=message_id,number=user.number,apiid=user.api_id,apihash=user.api_hash)
 
         else:
             LOGGER.info('We could not find the message of which we are looking for to do engagement.')
+
+
+        print('\n\n\n\n-----------',count_)
         
         ...
+
+
+# error -------------
+
+# [WDM] - ====== WebDriver manager ======
+# [WDM] - Current google-chrome version is 102.0.5005
+# [WDM] - Get LATEST chromedriver version for 102.0.5005 google-chrome
+# [WDM] - Driver [/home/eu4/.wdm/drivers/chromedriver/linux64/102.0.5005.61/chromedriver] found in cache
+# 2022-06-23 11:33:22,169  function_msg.py  main   INFO     Message: timeout: Timed out receiving message from renderer: -302.901
+#   (Session info: chrome=102.0.5005.61)

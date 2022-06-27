@@ -12,84 +12,132 @@ class Command(BaseCommand):
     help = 'send message as per csv'
 
     def handle(self,*args, **kwargs):
-        user_li = user_details.objects.all()
-        print(len(user_li))
-        for user in user_li:
-            number = user.number
-            apiid = user.api_id
-            apihash = user.api_hash
-            print(number)
+
+        from home.driver.driver import get_driver
+
+
+        driver = get_driver('testign_data')
+        driver.execute_script("window.open('http://google.com', 'new_window')")
+        driver.get('https://www.facebook.com')
+        driver.close()
+        # print(driver.current_window_handle,'=======')
+        driver.switch_to_window(driver.window_handles[0])
+        driver.get('https://www.google.com')
+        import time 
+        # time.sleep(5)
+        driver.get('https://web.telegram.org/k/')
+        aa = False
+        list_ = [
+            "log in to telegram by qr code",
+            "open telegram on your phone",
+            "go to settings > devices > link desktop device",
+            "point your phone at this screen to confirm login",
+            "log in by phone number",
+            "log in to telegram by qr code",
+            "open telegram on your phone",
+            "go to settings > devices > link desktop device",
+            "point your phone at this screen to confirm login",
+            "log in by phone number"
+        ]
+        if not driver.find_element(By.CLASS_NAME,'chat-list'):
             try:
-                client = TelegramClient(f'./sessions/{number}',apiid,apihash)
-        #             # pyrogram_authorization(number,apiid,apihash,client)
+                aa = driver.find_elements(By.XPATH,'//*')
+            except Exception as e:...
+        # print(aa)
+        if aa:
+            for a in aa:
+                print(str(a.text).lower())
+                if "log in by phone number" in str(a.text).lower():
+                    print(a.text)
+                    print('need login----------------')
+                    break
+        input('Enter :')
+        # user_li = user_details.objects.filter(status = "ACTIVE")
+        # print(len(user_li))
 
-        #     #         # engagement_data = Engagements.objects.create(user = user)
-                client.connect()
-        #     #         if client.is_user_authorized():
-                me = client.get_me()
-        #     #             print(me.first_name)
+
+
+        # for user in user_li:
+        #     view_chat('xana_text',user.number,user.api_id,user.api_hash)
+
+        #     send_messages('sdakhara','sdakhara','Hii loda',user.number,user.api_id,user.api_hash)
+        # print(len(user_li))
+        # for user in user_li:
+        #     number = user.number
+        #     apiid = user.api_id
+        #     apihash = user.api_hash
+        #     print(number)
+        #     try:
+        #         client = TelegramClient(f'./sessions/{number}',apiid,apihash)
+        # #             # pyrogram_authorization(number,apiid,apihash,client)
+
+        # #     #         # engagement_data = Engagements.objects.create(user = user)
+        #         client.connect()
+        # #     #         if client.is_user_authorized():
+        #         me = client.get_me()
+        # #     #             print(me.first_name)
                     
-                p_client = Client(f'./sessions/{number}_p',api_id=f"{apiid}",api_hash=f"{apihash}",phone_number=str(number))
-                p_client.connect()
+        #         p_client = Client(f'./sessions/{number}_p',api_id=f"{apiid}",api_hash=f"{apihash}",phone_number=str(number))
+        #         p_client.connect()
 
-                p_client.get_me()
+        #         p_client.get_me()
                             
-                p_client.disconnect()
+        #         p_client.disconnect()
+        # #         client.disconnect()
+        # # #         else:
+        # # #             inactive_user.objects.create(
+        # # #             user = user,
+        # # #             status = 'NOT AUTHORIZED'
+        # # #         )
+        # # #             user.status = "NOT AUTHORIZED"
+        # # #             user.save()
+        # # #             LOGGER.info(f'{number} is not authorized So please authorized it')    
+        #     except p_errors.SessionPasswordNeeded as e:
+        #         LOGGER.error(f'there {number} is SessionPasswordNeeded error')
+        #         if not inactive_user.objects.filter(user=user).exists():
+        #             inactive_user.objects.create(
+        #                 user = user,
+        #                 status = 'NEED PASSWORD'
+        #             )
+        #         user.status = 'NEED PASSWORD'
+        #         user.save()
+        #     except p_errors.PhoneNumberBanned as e:
+        #         LOGGER.error(f'there {number} is PhoneNumberBanned error')
+        #         if not inactive_user.objects.filter(user=user).exists():
+        #             inactive_user.objects.create(
+        #                 user = user,
+        #                 status = 'BANNED'
+        #             )
+        #         user.status = 'BANNED'
+        #         user.save()
+        #     except p_errors.AuthKeyUnregistered as e:
+        #         LOGGER.error(f'there {number} is AuthKeyUnregistered error')
+        #         if not inactive_user.objects.filter(user=user).exists():
+        #             inactive_user.objects.create(
+        #                 user = user,
+        #                 status = 'NOT AUTHORIZED'
+        #             )
+        #         user.status = 'NOT AUTHORIZED'
+        #         user.save()
+        #     except errors.AuthBytesInvalidError as e:
+        #         LOGGER.error(f'there {number} is AuthBytesInvalidError error')
+        #     except errors.FloodWaitError as e:
+        #         LOGGER.error(f'there {number} is FloodWaitError error')
+        #         if not inactive_user.objects.filter(user=user).exists():
+        #             inactive_user.objects.create(
+        #                 user = user,
+        #                 status = "TEMP BANNED"
+        #             )
+        #         user.status = "TEMP BANNED"
+        #         user.save()
+        #     except errors.UserBannedInChannelError as e:
+        #         LOGGER.error(f'there {number} is UserBannedInChannelError error')
+
+        #         LOGGER.error('This user is banned from the channel / group')
+
+        #     except Exception as e :
         #         client.disconnect()
-        # #         else:
-        # #             inactive_user.objects.create(
-        # #             user = user,
-        # #             status = 'NOT AUTHORIZED'
-        # #         )
-        # #             user.status = "NOT AUTHORIZED"
-        # #             user.save()
-        # #             LOGGER.info(f'{number} is not authorized So please authorized it')    
-            except p_errors.SessionPasswordNeeded as e:
-                LOGGER.error(f'there {number} is SessionPasswordNeeded error')
-                if not inactive_user.objects.filter(user=user).exists():
-                    inactive_user.objects.create(
-                        user = user,
-                        status = 'NEED PASSWORD'
-                    )
-                user.status = 'NEED PASSWORD'
-                user.save()
-            except p_errors.PhoneNumberBanned as e:
-                LOGGER.error(f'there {number} is PhoneNumberBanned error')
-                if not inactive_user.objects.filter(user=user).exists():
-                    inactive_user.objects.create(
-                        user = user,
-                        status = 'BANNED'
-                    )
-                user.status = 'BANNED'
-                user.save()
-            except p_errors.AuthKeyUnregistered as e:
-                LOGGER.error(f'there {number} is AuthKeyUnregistered error')
-                if not inactive_user.objects.filter(user=user).exists():
-                    inactive_user.objects.create(
-                        user = user,
-                        status = 'NOT AUTHORIZED'
-                    )
-                user.status = 'NOT AUTHORIZED'
-                user.save()
-            except errors.AuthBytesInvalidError as e:
-                LOGGER.error(f'there {number} is AuthBytesInvalidError error')
-            except errors.FloodWaitError as e:
-                LOGGER.error(f'there {number} is FloodWaitError error')
-                if not inactive_user.objects.filter(user=user).exists():
-                    inactive_user.objects.create(
-                        user = user,
-                        status = "TEMP BANNED"
-                    )
-                user.status = "TEMP BANNED"
-                user.save()
-            except errors.UserBannedInChannelError as e:
-                LOGGER.error(f'there {number} is UserBannedInChannelError error')
-
-                LOGGER.error('This user is banned from the channel / group')
-
-            except Exception as e :
-                client.disconnect()
-                LOGGER.info(e)
+        #         LOGGER.info(e)
 
 
 
@@ -163,3 +211,5 @@ class Command(BaseCommand):
             # else:
             #     print('The user is authorised')
             # add_group('qatestingxana','qatestingxana',random.choice(COMMENTS_),user.number,user.api_id,user.api_hash)
+
+

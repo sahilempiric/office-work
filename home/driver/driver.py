@@ -8,6 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 from Telegram.settings import BASE_DIR
+driver = ''
 def driver_options(profile_dir):
     options = webdriver.ChromeOptions()
     software_names = [SoftwareName.CHROME.value]
@@ -21,51 +22,51 @@ def driver_options(profile_dir):
     options = webdriver.ChromeOptions() 
 
     # options.add_extension("CyberGhost_VPN.crx")#crx file path
-    # options.add_argument('--no-sandbox')
-    # options.add_argument('--autoplay-policy=no-user-gesture-required')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--autoplay-policy=no-user-gesture-required')
     options.add_argument('--start-maximized')    
-    # options.add_argument('--single-process')
-    # options.add_argument('--disable-dev-shm-usage')
-    # options.add_argument("--disable-blink-features")
-    # options.add_argument("--ignore-certificate-errors")
-    # options.add_argument("--enable-javascript")
-    # options.add_argument("--disable-notifications")
-    # options.add_argument('--disable-blink-features=AutomationControlled')
-    # options.add_argument("--enable-popup-blocking")
-    # # options.add_argument('--user-data-dir=./profiles/')
-    # # options.add_argument(f"--profile-directory={'1_'+str(username__)}")
-    # options.add_experimental_option('useAutomationExtension', False)
-    # options.add_experimental_option("excludeSwitches", [
-    #     "enable-logging",
-    #     "enable-automation",
-    #     "ignore-certificate-errors",
-    #     "safebrowsing-disable-download-protection",
-    #     "safebrowsing-disable-auto-update",
-    #     "disable-client-side-phishing-detection"])
-    # options.add_argument("disable-infobars")
-    # options.add_argument('--no-sandbox')
-    # options.add_argument('--autoplay-policy=no-user-gesture-required')
-    # options.add_argument('--start-maximized')
-    # options.add_argument('--disable-dev-shm-usage')
-    # options.add_argument("--disable-blink-features")
-    # options.add_argument("--ignore-certificate-errors")
-    # options.add_argument("--enable-javascript")
-    # options.add_argument("--disable-notifications")
-    # options.add_argument("disable-infobars")
-    # options.add_argument('--no-proxy-server')
-    # options.add_argument('--disable-gpu')
-    # options.add_argument("--disable-popup-blocking")
-    # options.add_argument('--disable-blink-features=AutomationControlled')
-    # options.add_argument("--disable-web-security")
-    # options.add_argument("--allow-running-insecure-content")
-    # options.add_experimental_option('useAutomationExtension', True)
-    # options.add_experimental_option("excludeSwitches", [
-    #     "enable-logging",
-    #     "enable-automation",
-    #     "ignore-certificate-errors",
-    #     "safebrowsing-disable-download-protection",
-    #     "safebrowsing-disable-auto-update",
-    #     "disable-client-side-phishing-detection"])
+    options.add_argument('--single-process')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--disable-blink-features")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--enable-javascript")
+    options.add_argument("--disable-notifications")
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_argument("--enable-popup-blocking")
+    # options.add_argument('--user-data-dir=./profiles/')
+    # options.add_argument(f"--profile-directory={'1_'+str(username__)}")
+    options.add_experimental_option('useAutomationExtension', False)
+    options.add_experimental_option("excludeSwitches", [
+        "enable-logging",
+        "enable-automation",
+        "ignore-certificate-errors",
+        "safebrowsing-disable-download-protection",
+        "safebrowsing-disable-auto-update",
+        "disable-client-side-phishing-detection"])
+    options.add_argument("disable-infobars")
+    options.add_argument('--no-sandbox')
+    options.add_argument('--autoplay-policy=no-user-gesture-required')
+    options.add_argument('--start-maximized')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--disable-blink-features")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--enable-javascript")
+    options.add_argument("--disable-notifications")
+    options.add_argument("disable-infobars")
+    options.add_argument('--no-proxy-server')
+    options.add_argument('--disable-gpu')
+    options.add_argument("--disable-popup-blocking")
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_argument("--disable-web-security")
+    options.add_argument("--allow-running-insecure-content")
+    options.add_experimental_option('useAutomationExtension', True)
+    options.add_experimental_option("excludeSwitches", [
+        "enable-logging",
+        "enable-automation",
+        "ignore-certificate-errors",
+        "safebrowsing-disable-download-protection",
+        "safebrowsing-disable-auto-update",
+        "disable-client-side-phishing-detection"])
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36")
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
@@ -142,7 +143,12 @@ def get_driver(profile_dir='profile_dir'):
     #         renderer="Intel Iris OpenGL Engine",
     #         fix_hairline=True,
     #     )
-    connect_vpn(driver)
-    
-        
+    # connect_vpn(driver)
+
     return driver
+
+
+
+# element = WebDriverWait(driver, 10).until(
+#         EC.presence_of_element_located((By.ID, "myDynamicElement"))
+    # )

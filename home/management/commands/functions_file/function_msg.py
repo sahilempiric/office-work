@@ -1,10 +1,11 @@
 from distutils.log import error
+from email import message
 import time
 import random
-from numpy import full
 from requests import request
 from telethon import TelegramClient
 from telethon.sync import TelegramClient
+from home.driver.driver import get_driver
 from home.models import Engagements, comment_view, inactive_user, user_details, view
 import telethon,os
 from telethon import errors
@@ -12,7 +13,13 @@ from telethon.tl.functions.channels import JoinChannelRequest
 from pyrogram import Client
 from pyrogram import errors as p_errors
 from main import LOGGER
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 
+from utils import random_sleep
 
 
 def add_group(view_group,groupname,Message,number,apiid,apihash):
@@ -105,6 +112,7 @@ def view_chat(groupname,number,apiid,apihash):
         user = user_details.objects.filter(number=number).first()
         if client.is_user_authorized():
             me = client.get_me()
+            client(JoinChannelRequest(groupname))
             entity = client.get_entity(groupname)
             if client.send_read_acknowledge(entity):
                 view.objects.create(
@@ -117,7 +125,8 @@ def view_chat(groupname,number,apiid,apihash):
             user.status = "NOT AUTHORIZED"
             user.save()
             LOGGER.info(f'{number} is not authorized So please authorized it')    
-        time.sleep(random.randint(3,5))
+        # time.sleep(random.randint(3,5))
+        time.sleep(0.5)
         client.disconnect()
     except Exception as e :
         client.disconnect()
@@ -229,6 +238,7 @@ def engagement_msg_id(groupname):
     msg_id_li = []
     for i in range(15):
         if msg_id_li: return msg_id_li
+        
         user = user_details.objects.filter(status="ACTIVE").order_by('?').first()
         try:
             client = TelegramClient(f'./sessions/{user.number}',user.api_id,user.api_hash)
@@ -237,6 +247,7 @@ def engagement_msg_id(groupname):
                 me = client.get_me()
                 client(JoinChannelRequest(groupname))
                 message_count = 0
+                # print(me)
                 for message in client.iter_messages(groupname):
                     # LOGGER.info(message.text)
                     if utc.localize(last_few_days) <  message.date:
@@ -254,6 +265,7 @@ def engagement_msg_id(groupname):
                 user.save()
                 
         except p_errors.SessionPasswordNeeded as e:
+
             LOGGER.error(f'there {user.number} is SessionPasswordNeeded error')
             if not inactive_user.objects.filter(user=user).exists():
                 inactive_user.objects.create(
@@ -303,20 +315,21 @@ def engagement_msg_id(groupname):
     return msg_id_li
 
 def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
+    action_status = False
     reaction_list = ["❤️","👍","🔥"]
     view_nu = 0
     user = user_details.objects.filter(number=number).first()
     try:
         client = TelegramClient(f'./sessions/{number}',apiid,apihash)
         pyrogram_authorization(number,apiid,apihash,client)
-        
-        # engagement_data = Engagements.objects.create(user = user)
         client.connect()
         if client.is_user_authorized():
             me = client.get_me()
             client(JoinChannelRequest(groupname))
             entity = client.get_entity(groupname)
-            # client.send_read_acknowledge()
+            peer_name = client.get_entity(groupname).title
+            dr_bot = view_on_post(number,groupname)
+            dr_bot.login(client,peer_name)
             if client.send_read_acknowledge(entity):
                 user.views += 1
                 user.save()
@@ -352,6 +365,7 @@ def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
                     reaction = random.choice(reaction_list)
                     if not Engagements.objects.filter(user = user,engagement_on = groupname,message_on = int(msg)).exists():
                         try:
+
                             if p_client.send_reaction(groupname,msg,reaction):
                                 Engagements.objects.create(
                                     user = user,
@@ -363,12 +377,13 @@ def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
                                 user.reaction += 1
                                 user.save()
                                 LOGGER.info(f"{me.first_name} has send reaction {reaction} on message id : {msg} of {groupname} channel / group.")
+                                action_status = True
                             else:
                                 LOGGER.info(f"{me.first_name} couldn't send reaction {reaction} on message id : {msg} of {groupname} channel / group.")
                         except Exception as e:LOGGER.error(e)
                     else:
                         LOGGER.info(f"{me.first_name} have already sent the reaction {reaction} on message id : {msg} of {groupname} channel / group and can not sent reaction again.")
-                    time.sleep(2)
+                    # time.sleep(2)
             p_client.disconnect()
         else:
             if not inactive_user.objects.filter(user=user).exists():
@@ -426,6 +441,158 @@ def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
     except Exception as e :
         client.disconnect()
         LOGGER.info(e)
+
+    return action_status
+
+
+class view_on_post():
+    
+    def __init__(self,number,groupname) -> None:
+        print('111')
+        self.number = number
+        self.driver = get_driver(profile_dir=number)
+        self.driver.get('https://web.telegram.org/k/')
+        self.driver.refresh()
+        self.logger = LOGGER
+        self.groupname = groupname
+        ...
+
+
+        
+
+    def find_element(self, element, locator, locator_type=By.XPATH,
+            page=None, timeout=10,
+            condition_func=EC.presence_of_element_located,
+            condition_other_args=tuple()):
+        """Find an element, then return it or None.
+        If timeout is less than or requal zero, then just find.
+        If it is more than zero, then wait for the element present.
+        """
+        time.sleep(3)
+        try:
+            if timeout > 0:
+                wait_obj = WebDriverWait(self.driver, timeout)
+                ele = wait_obj.until(
+                        condition_func((locator_type, locator),
+                            *condition_other_args))
+            else:
+                self.logger.debug(f'Timeout is less or equal zero: {timeout}')
+                ele = self.driver.find_element(by=locator_type,
+                        value=locator)
+            if page:
+                self.logger.debug(
+                        f'Found the element "{element}" in the page "{page}"')
+            else:
+                self.logger.debug(f'Found the element: {element}')
+            return ele
+        except (NoSuchElementException, TimeoutException) as e:
+            if page:
+                self.logger.debug(f'Cannot find the element "{element}"'
+                        f' in the page "{page}"')
+            else:
+                self.logger.debug(f'Cannot find the element: {element}')
+            
+            return False
+
+    def click_element(self, element, locator, locator_type=By.XPATH,
+            timeout=10,page=None):
+        time.sleep(3)
+        
+        """Find an element, then click and return it, or return None"""
+        try:
+            ele = self.find_element(element, locator, locator_type, timeout=timeout,page=page)
+            if ele:
+                ele.click()
+                LOGGER.debug(f'Clicked the element: {element}')
+                return ele
+
+            else:return False
+        except Exception as e:print(e)
+
+    def input_text(self, text, element, locator, locator_type=By.XPATH,
+            timeout=10, page=None):
+        time.sleep(3)
+        
+        """Find an element, then input text and return it, or return None"""
+        try:
+            
+            ele = self.find_element(element, locator, locator_type=locator_type,
+                    timeout=timeout,page=page)
+            if ele:
+                ele.clear()
+                ele.send_keys(text)
+                self.logger.debug(f'Inputed "{text}" for the element: {element}')
+                return ele
+        except Exception as e :
+            self.logger.info(f'Got an error in input text :{element} {e}')
+            
+            return False
+
+    def new_tab(self):
+        self.driver.execute_script("window.open('https://web.telegram.org/k/', 'new_window')")
+        self.driver.close()
+        # driver.switch_to_window(driver.window_handles[0])
+        self.driver.switch_to_window(self.driver.window_handles[0])
+        self.driver.get('https://web.telegram.org/k/')
+
+    def login(self,client,peer_name):
+        self.driver.get('https://web.telegram.org/k/')
+        random_sleep(5,10)
+        self.new_tab()
+        random_sleep(5,8)
+        all_ele = False
+        try:all_ele = self.driver.find_elements(By.XPATH,'//*')
+        except Exception as e:...
+        login_need = False
+        if all_ele:
+            for ele in all_ele:
+                if "log in by phone number" in str(ele.text).lower():
+                    login_need = True
+                    break 
+        try:
+            action = ActionChains(self.driver)
+
+
+            if login_need == True:
+                random_sleep(3,5)
+                self.click_element('phone number','c-ripple',By.CLASS_NAME)
+                self.input_text(self.number,'phone number field','//*[@id="auth-pages"]/div/div[2]/div[1]/div/div[3]/div[2]/div[1]')
+                random_sleep(5,8)
+                self.click_element('Next btn','//*[@id="auth-pages"]/div/div[2]/div[1]/div/div[3]/button[1]',By.XPATH,timeout=12,page='Login')
+                random_sleep(8,12)
+                client.connect()
+                telegram_msg = client.get_dialogs()[0].message
+                try:otp__ = str(telegram_msg.text).replace('**Login code:**','').split(' ')[1].replace('.','')
+                except Exception as e:otp__=''
+                client.disconnect()
+                try:self.input_text(otp__,'Otp input','//*[@id="auth-pages"]/div/div[2]/div[3]/div/div[3]/div/input',By.XPATH,timeout=40)
+                except Exception as e:LOGGER.error(e)
+                element__=self.find_element('home page','//*[@id="folders-container"]/div/div[1]/ul/li[1]/div[1]',By.XPATH,timeout=20)
+                action.click(element__).perform()
+
+            # try:
+            #     peer_all_list = self.driver.find_elements(By.CLASS_NAME,'peer-title')
+            #     for peer in peer_all_list:
+            #         if peer.text == peer_name:
+            #             action.click(peer).perform()
+            #             # break
+            # except Exception as e:LOGGER.error(e)
+            self.driver.get(f"https://web.telegram.org/k/#@{self.groupname}")
+            random_sleep(5,10)
+            
+        except Exception as e:
+            LOGGER.error(e)
+            self.driver.quit()
+        self.driver.quit()
+
+
+
+
+
+
+
+
+
 
 
 
